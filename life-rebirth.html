@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>삶과재생 — 아비담마 교육 프로그램</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f8f7f4;--bg2:#ffffff;--bg3:#f1efe9;--border:#e4e2db;--border2:#c8c5bc;--text:#1a1a1a;--text2:#555050;--text3:#9e9990;--accent:#6b46c1;--green:#2e7d52;--green-bg:#edf7f1;--blue:#1a6faa;--blue-bg:#e8f3fb;--amber:#b45309;--amber-bg:#fef3e2;--teal:#0f766e;--teal-bg:#f0fdfa;--rose:#be185d;--rose-bg:#fdf2f8;--red:#b91c1c;--red-bg:#fef2f2;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;}
+    .topbar{position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .topbar-logo{display:flex;align-items:center;gap:8px;padding:11px 24px 0;font-size:13px;font-weight:500;color:var(--text);text-decoration:none;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .main-nav{display:flex;overflow-x:auto;padding:0 16px;}
+    .main-nav::-webkit-scrollbar{height:0;}
+    .nav-item{flex-shrink:0;padding:9px 12px 8px;font-size:12px;font-weight:500;color:var(--text3);text-decoration:none;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .nav-item:hover{color:var(--text2);}
+    .nav-item.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .sub-tabbar{background:var(--bg3);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;position:sticky;top:72px;z-index:199;}
+    .sub-tabbar::-webkit-scrollbar{height:0;}
+    .sub-tab{flex-shrink:0;padding:8px 14px 7px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .sub-tab:hover{color:var(--text2);}
+    .sub-tab.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .panel{display:none;}.panel.on{display:block;}
+    .content{max-width:680px;margin:0 auto;padding:28px 20px 80px;}
+    .mod-header{margin-bottom:24px;}
+    .mod-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+    .mod-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.4;}
+    .mod-desc{font-size:13px;color:var(--text2);line-height:1.75;}
+    .sec{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+    .sec-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+    .sec-title{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.4;}
+    .sec-body{font-size:13px;color:var(--text2);line-height:1.8;}
+    .sec-body p{margin-bottom:10px;}.sec-body p:last-child{margin-bottom:0;}.sec-body strong{color:var(--text);}
+    .hl{border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:13px 15px;margin:13px 0;font-size:13px;color:var(--text2);line-height:1.75;background:var(--blue-bg);}
+    .hl strong{color:var(--blue);}
+    .hl-amber{background:var(--amber-bg);border-left-color:var(--amber);}.hl-amber strong{color:var(--amber);}
+    .hl-rose{background:var(--rose-bg);border-left-color:var(--rose);}.hl-rose strong{color:var(--rose);}
+    .hl-teal{background:var(--teal-bg);border-left-color:var(--teal);}.hl-teal strong{color:var(--teal);}
+
+    /* 생애 타임라인 */
+    .timeline{display:flex;flex-direction:column;gap:0;margin:14px 0;}
+    .tl-row{display:flex;gap:12px;align-items:flex-start;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0;}
+    .tl-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+    .tl-line{width:2px;flex:1;min-height:16px;background:var(--border);}
+    .tl-body{flex:1;padding-bottom:16px;}
+    .tl-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+    .tl-pali{font-size:11px;color:var(--text3);font-style:italic;margin-bottom:4px;}
+    .tl-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+    /* 재생연결 흐름 */
+    .rebirth-flow{display:flex;flex-direction:column;gap:8px;margin:14px 0;}
+    .rb-step{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;}
+    .rb-num{width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;margin-top:1px;}
+    .rb-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+    .rb-desc{font-size:12px;color:var(--text2);line-height:1.55;}
+
+    /* 존재계 */
+    .planes-grid{display:flex;flex-direction:column;gap:8px;margin:14px 0;}
+    .plane-group{border-radius:11px;border:1px solid var(--border);overflow:hidden;}
+    .plane-group-head{padding:11px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+    .plane-group-body{display:none;padding:0 14px 12px;}
+    .plane-group.open .plane-group-body{display:block;}
+    .plane-item{font-size:12px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;}
+    .plane-item:last-child{border-bottom:none;}
+    .plane-item-name{font-weight:500;color:var(--text);}
+    .plane-item-life{font-size:11px;color:var(--text3);}
+
+    /* 퀴즈 */
+    .quiz-num{font-size:11px;color:var(--text3);margin-bottom:8px;}
+    .quiz-q{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.55;}
+    .quiz-opts{display:flex;flex-direction:column;gap:7px;}
+    .quiz-opt{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:transparent;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Noto Sans KR',sans-serif;}
+    .quiz-opt:hover:not(:disabled){border-color:var(--accent);color:var(--text);}
+    .quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+    .quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+    .quiz-result{display:none;margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12px;line-height:1.6;}
+    .quiz-result.show{display:block;}
+    .quiz-result.ok{background:var(--green-bg);color:var(--green);}
+    .quiz-result.fail{background:var(--red-bg);color:var(--red);}
+    .done-banner{display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:12px;padding:20px;text-align:center;margin-top:14px;}
+    .done-banner.show{display:block;}
+    .done-title{font-size:15px;font-weight:500;color:var(--green);margin-bottom:5px;}
+    .done-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+    .done-btn{display:inline-block;padding:8px 20px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:500;text-decoration:none;margin:4px;}
+    .done-btn-sec{display:inline-block;padding:8px 20px;border-radius:99px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:4px;}
+    @media(max-width:480px){.content{padding:20px 14px 60px;}.sub-tabbar{top:68px;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a class="topbar-logo" href="index.html"><div class="logo-dot"></div>아비담마 교육 프로그램</a>
+  <div class="main-nav">
+    <a class="nav-item" href="index.html">홈</a>
+    <a class="nav-item" href="intro.html">입문</a>
+    <a class="nav-item" href="core-concepts.html">핵심개념</a>
+    <a class="nav-item" href="vithi.html">인식과정</a>
+    <button class="nav-item on">삶과재생</button>
+    <a class="nav-item" href="advanced.html">심화·응용</a>
+  </div>
+</div>
+<div class="sub-tabbar">
+  <button class="sub-tab on" onclick="switchSub(0)">한 생의 마음 흐름</button>
+  <button class="sub-tab" onclick="switchSub(1)">재생연결 인식과정</button>
+  <button class="sub-tab" onclick="switchSub(2)">31 존재계</button>
+</div>
+
+<!-- 패널 0: 한 생의 마음 흐름 -->
+<div class="panel on" id="panel-0">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">삶과재생 · 첫 번째 모듈</div>
+      <div class="mod-title">한 생의 마음 흐름</div>
+      <div class="mod-desc">태어나는 순간부터 죽는 순간까지, 한 생 동안 마음이 어떻게 흐르는지를 아비담마로 살펴봅니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">한 생의 마음 구조</div>
+      <div class="sec-body">
+        <p>아비담마에서 한 생은 세 종류의 마음으로 구성됩니다.</p>
+        <div class="hl">
+          <strong>재생연결심</strong> → <strong>바왕가</strong>(잠재의식 흐름) → <strong>인식과정들</strong> → <strong>죽음심</strong><br>
+          이 세 가지 마음은 같은 업(業)에 의해 결정된 동일한 마음입니다.
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">생애 타임라인</div>
+      <div class="sec-title">탄생에서 죽음까지</div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-left"><div class="tl-dot" style="background:var(--blue-bg);font-size:18px;">🌱</div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-title">재생연결심 (Paṭisandhi-citta)</div>
+            <div class="tl-pali">빠띠산디찟따</div>
+            <div class="tl-desc">수정 순간 한 찰나 일어납니다. 전생의 마지막 바왕가와 동일한 마음. 이 찰나가 새 생의 첫 번째 마음입니다.</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-left"><div class="tl-dot" style="background:var(--bg3);font-size:18px;">〰️</div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-title">바왕가 (Bhavaṅga-citta)</div>
+            <div class="tl-pali">바왕가찟따 — 유분심</div>
+            <div class="tl-desc">인식과정이 없을 때 흐르는 잠재의식. 잠을 잘 때, 깊은 명상 중, 인식과정 사이에 계속 흐릅니다. 한 생 동안 수조 번 일어납니다.</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-left"><div class="tl-dot" style="background:var(--amber-bg);font-size:18px;">⚡</div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-title">인식과정들 (Vīthi-citta)</div>
+            <div class="tl-pali">위티찟따</div>
+            <div class="tl-desc">대상이 감각문에 나타날 때마다 17심찰나 인식과정이 일어납니다. 깨어있는 동안 끊임없이 일어납니다. 업(業)은 이 과정의 속행(자와나) 찰나에서 만들어집니다.</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-left"><div class="tl-dot" style="background:var(--rose-bg);font-size:18px;">🕯️</div></div>
+          <div class="tl-body" style="padding-bottom:0;">
+            <div class="tl-title">죽음심 (Cuti-citta)</div>
+            <div class="tl-pali">쭈띠찟따</div>
+            <div class="tl-desc">마지막 한 찰나. 이 찰나가 사라지는 동시에 다음 생의 재생연결심이 일어납니다. 재생연결심과 동일한 마음입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">한 생의 마음 흐름 — 확인</div>
+      <div id="q0-area"></div>
+      <div class="done-banner" id="d0-banner">
+        <div class="done-title">✓ 완료!</div><div class="done-sub">다음은 재생연결 인식과정입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(1)">재생연결 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 패널 1: 재생연결 -->
+<div class="panel" id="panel-1">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">삶과재생 · 두 번째 모듈</div>
+      <div class="mod-title">재생연결 인식과정</div>
+      <div class="mod-desc">죽음 직전의 마음에서 다음 생의 재생연결심이 어떻게 이어지는지를 살펴봅니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">어떻게 다음 생이 결정되는가?</div>
+      <div class="sec-body">
+        <p>죽음이 가까워지면 마음에 특별한 대상이 나타납니다. 이 대상이 다음 생을 결정합니다.</p>
+        <div class="hl hl-rose">
+          죽음 직전 마음에 나타나는 대상은 세 가지입니다:<br>
+          <strong>업(Kamma)</strong> — 과거에 지은 강한 업 자체<br>
+          <strong>업표(Kamma-nimitta)</strong> — 업을 지을 때의 장면이나 도구<br>
+          <strong>취처(Gati-nimitta)</strong> — 다음 생에 태어날 곳의 모습
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">재생연결 흐름</div>
+      <div class="sec-title">죽음에서 재생까지</div>
+      <div class="rebirth-flow">
+        <div class="rb-step"><div class="rb-num">1</div><div><div class="rb-title">임종 근처의 속행(자와나)</div><div class="rb-desc">죽기 직전, 업·업표·취처 중 하나가 대상으로 나타납니다. 마지막 속행이 이 대상을 강하게 인식합니다.</div></div></div>
+        <div class="rb-step"><div class="rb-num">2</div><div><div class="rb-title">마라나사나 바왕가</div><div class="rb-desc">임종 직전의 바왕가. 마지막 바왕가들이 흐릅니다.</div></div></div>
+        <div class="rb-step"><div class="rb-num">3</div><div><div class="rb-title">죽음심 (Cuti-citta)</div><div class="rb-desc">이 생의 마지막 마음. 한 찰나 일어나고 사라집니다. 이 찰나가 사라지는 동시에 다음 생이 시작됩니다.</div></div></div>
+        <div class="rb-step"><div class="rb-num">4</div><div><div class="rb-title">재생연결심 (Paṭisandhi-citta)</div><div class="rb-desc">다음 생의 첫 번째 마음. 죽음심과 동일한 대상을 가집니다. 어디에 태어나는지가 이 마음에 의해 결정됩니다.</div></div></div>
+        <div class="rb-step"><div class="rb-num">5</div><div><div class="rb-title">새 생의 바왕가</div><div class="rb-desc">재생연결심 직후, 새 생의 바왕가가 흐르기 시작합니다. 새 생이 본격적으로 시작됩니다.</div></div></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">재생연결 — 확인</div>
+      <div id="q1-area"></div>
+      <div class="done-banner" id="d1-banner">
+        <div class="done-title">✓ 완료!</div><div class="done-sub">다음은 31 존재계입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(2)">31 존재계 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 패널 2: 31 존재계 -->
+<div class="panel" id="panel-2">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">삶과재생 · 세 번째 모듈</div>
+      <div class="mod-title">31 존재계</div>
+      <div class="mod-desc">아비담마는 존재계를 욕계·색계·무색계 31처로 분류합니다. 각 항목을 클릭해 펼쳐보세요.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">왜 31 존재계인가?</div>
+      <div class="sec-body">
+        <p>아비담마에서 중생이 태어날 수 있는 곳은 <strong>31가지</strong>입니다. 어디에 태어나는지는 지은 업(業)에 따라 결정됩니다.</p>
+        <div class="hl hl-teal">
+          불선업 → 악처(지옥·아귀·축생·아수라) 재생<br>
+          선업 → 인간·천상·범천 재생<br>
+          선정 → 색계·무색계 재생
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">31 존재계 탐색</div>
+      <div class="sec-title">클릭해서 펼쳐보세요</div>
+      <div class="planes-grid">
+        <div class="plane-group" style="border-color:#fca5a5;">
+          <div class="plane-group-head" style="background:#fef2f2;color:var(--red);" onclick="togglePlane(this)">
+            악처 (4처) <span>▶</span>
+          </div>
+          <div class="plane-group-body">
+            <div class="plane-item"><span class="plane-item-name">지옥 (Niraya)</span><span class="plane-item-life">매우 긴 수명</span></div>
+            <div class="plane-item"><span class="plane-item-name">축생 (Tiracchāna)</span><span class="plane-item-life">다양</span></div>
+            <div class="plane-item"><span class="plane-item-name">아귀 (Peta)</span><span class="plane-item-life">다양</span></div>
+            <div class="plane-item"><span class="plane-item-name">아수라 (Asura)</span><span class="plane-item-life">다양</span></div>
+          </div>
+        </div>
+        <div class="plane-group" style="border-color:#93c5fd;">
+          <div class="plane-group-head" style="background:#eff6ff;color:var(--blue);" onclick="togglePlane(this)">
+            욕계 선처 (7처) <span>▶</span>
+          </div>
+          <div class="plane-group-body">
+            <div class="plane-item"><span class="plane-item-name">인간계 (Manussa)</span><span class="plane-item-life">최대 수백 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">사왕천 (Cātumahārājika)</span><span class="plane-item-life">9백만 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">도리천 (Tāvatiṃsa)</span><span class="plane-item-life">3천6백만 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">야마천 (Yāma)</span><span class="plane-item-life">1억4천4백만 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">도솔천 (Tusita)</span><span class="plane-item-life">5억7천6백만 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">화락천 (Nimmānarati)</span><span class="plane-item-life">23억400만 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">타화자재천 (Paranimmita)</span><span class="plane-item-life">92억1천600만 년</span></div>
+          </div>
+        </div>
+        <div class="plane-group" style="border-color:#86efac;">
+          <div class="plane-group-head" style="background:#f0fdf4;color:var(--green);" onclick="togglePlane(this)">
+            색계 (16처) <span>▶</span>
+          </div>
+          <div class="plane-group-body">
+            <div class="plane-item"><span class="plane-item-name">범중천·범보천·대범천 (초선)</span><span class="plane-item-life">수억~수십억 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">소광천·무량광천·광음천 (이선)</span><span class="plane-item-life">수십억~수조 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">소정천·무량정천·변정천 (삼선)</span><span class="plane-item-life">수조~수백조 년</span></div>
+            <div class="plane-item"><span class="plane-item-name">광과천·무상천 (사선)</span><span class="plane-item-life">500~500대겁</span></div>
+            <div class="plane-item"><span class="plane-item-name">정거천 5처 (아나함 전용)</span><span class="plane-item-life">1천~16천 대겁</span></div>
+          </div>
+        </div>
+        <div class="plane-group" style="border-color:#5eead4;">
+          <div class="plane-group-head" style="background:var(--teal-bg);color:var(--teal);" onclick="togglePlane(this)">
+            무색계 (4처) <span>▶</span>
+          </div>
+          <div class="plane-group-body">
+            <div class="plane-item"><span class="plane-item-name">공무변처</span><span class="plane-item-life">2만 대겁</span></div>
+            <div class="plane-item"><span class="plane-item-name">식무변처</span><span class="plane-item-life">4만 대겁</span></div>
+            <div class="plane-item"><span class="plane-item-name">무소유처</span><span class="plane-item-life">6만 대겁</span></div>
+            <div class="plane-item"><span class="plane-item-name">비상비비상처</span><span class="plane-item-life">8만4천 대겁</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">31 존재계 — 확인</div>
+      <div id="q2-area"></div>
+      <div class="done-banner" id="d2-banner">
+        <div class="done-title">🎉 삶과재생 단계 완료!</div>
+        <div class="done-sub">삶과재생 3개 모듈을 모두 마쳤습니다.</div>
+        <a class="done-btn" href="index.html">홈으로</a>
+        <a class="done-btn" href="advanced.html">심화·응용 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded',function(){
+  const hash=location.hash.replace('#','');
+  const map={life:0,rebirth:1,planes:2};
+  if(hash&&map[hash]!==undefined)switchSub(map[hash]);
+});
+function switchSub(i){
+  document.querySelectorAll('.sub-tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function togglePlane(head){
+  const group=head.parentElement;
+  group.classList.toggle('open');
+  head.querySelector('span').textContent=group.classList.contains('open')?'▼':'▶';
+}
+function makeQuiz(areaId,bannerId,quizzes){
+  let idx=0;const fn='ans_'+areaId;
+  function render(){
+    if(idx>=quizzes.length){document.getElementById(areaId).innerHTML='<p style="font-size:14px;color:var(--green);font-weight:500;text-align:center;padding:14px 0;">🎉 퀴즈 완료!</p>';document.getElementById(bannerId).classList.add('show');return;}
+    const q=quizzes[idx];
+    document.getElementById(areaId).innerHTML=`<div class="quiz-num">문제 ${idx+1} / ${quizzes.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="${fn}(${i})">${o}</button>`).join('')}</div><div class="quiz-result" id="qr_${areaId}"></div>`;
+    window[fn]=function(i){
+      document.querySelectorAll(`#${areaId} .quiz-opt`).forEach((o,j)=>{o.disabled=true;if(j===q.ans)o.classList.add('correct');else if(j===i)o.classList.add('wrong');});
+      const res=document.getElementById('qr_'+areaId);
+      res.className='quiz-result show '+(i===q.ans?'ok':'fail');
+      res.innerHTML=i===q.ans?'✓ 정답! '+q.explain:'✗ 정답은 <strong>"'+q.opts[q.ans]+'"</strong>입니다. '+q.explain;
+      setTimeout(()=>{idx++;render();},2000);
+    };
+  }
+  render();
+}
+makeQuiz('q0-area','d0-banner',[
+  {q:"한 생 동안 가장 많이 일어나는 마음은?",opts:["재생연결심","바왕가","인식과정","죽음심"],ans:1,explain:"바왕가(잠재의식)는 인식과정이 없을 때 끊임없이 흐르며 한 생 동안 가장 많이 일어납니다."},
+  {q:"재생연결심·바왕가·죽음심의 관계는?",opts:["모두 다른 마음","동일한 업에 의해 결정된 같은 마음","순서대로 발전하는 마음","선정에 따라 달라지는 마음"],ans:1,explain:"재생연결심·바왕가·죽음심은 동일한 과거 업에 의해 결정된 같은 종류의 마음입니다."},
+]);
+makeQuiz('q1-area','d1-banner',[
+  {q:"죽음 직전 마음에 나타나는 대상이 아닌 것은?",opts:["업(Kamma)","업표(Kamma-nimitta)","취처(Gati-nimitta)","바왕가"],ans:3,explain:"죽음 직전 대상은 업·업표·취처 세 가지입니다. 바왕가는 대상이 아닌 잠재의식의 흐름입니다."},
+  {q:"재생연결심과 죽음심의 관계는?",opts:["완전히 다른 마음","동일한 대상을 가진 같은 종류의 마음","죽음심이 재생연결심으로 변함","인과관계가 없음"],ans:1,explain:"재생연결심과 죽음심은 동일한 대상을 가지며, 죽음심이 사라지는 찰나와 동시에 재생연결심이 일어납니다."},
+]);
+makeQuiz('q2-area','d2-banner',[
+  {q:"아나함(불환)만 재생할 수 있는 특별한 곳은?",opts:["도리천","범중천","정거천(淨居天)","비상비비상처"],ans:2,explain:"정거천은 아나함 전용 거처입니다. 욕계 탐진을 소멸한 아나함은 정거천에서 열반에 듭니다."},
+  {q:"31 존재계 중 악처(악한 곳)는 몇 처인가요?",opts:["3처","4처","5처","7처"],ans:1,explain:"악처는 지옥·축생·아귀·아수라 4처입니다."},
+]);
+</script>
+</body>
+</html>

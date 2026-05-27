@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>심화·응용 — 아비담마 교육 프로그램</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f8f7f4;--bg2:#ffffff;--bg3:#f1efe9;--border:#e4e2db;--border2:#c8c5bc;--text:#1a1a1a;--text2:#555050;--text3:#9e9990;--accent:#6b46c1;--green:#2e7d52;--green-bg:#edf7f1;--blue:#1a6faa;--blue-bg:#e8f3fb;--amber:#b45309;--amber-bg:#fef3e2;--teal:#0f766e;--teal-bg:#f0fdfa;--rose:#be185d;--rose-bg:#fdf2f8;--red:#b91c1c;--red-bg:#fef2f2;--purple:#7c3aed;--purple-bg:#f5f3ff;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;}
+    .topbar{position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .topbar-logo{display:flex;align-items:center;gap:8px;padding:11px 24px 0;font-size:13px;font-weight:500;color:var(--text);text-decoration:none;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .main-nav{display:flex;overflow-x:auto;padding:0 16px;}
+    .main-nav::-webkit-scrollbar{height:0;}
+    .nav-item{flex-shrink:0;padding:9px 12px 8px;font-size:12px;font-weight:500;color:var(--text3);text-decoration:none;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .nav-item:hover{color:var(--text2);}
+    .nav-item.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .sub-tabbar{background:var(--bg3);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;position:sticky;top:72px;z-index:199;}
+    .sub-tabbar::-webkit-scrollbar{height:0;}
+    .sub-tab{flex-shrink:0;padding:8px 14px 7px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .sub-tab:hover{color:var(--text2);}
+    .sub-tab.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .panel{display:none;}.panel.on{display:block;}
+    .content{max-width:680px;margin:0 auto;padding:28px 20px 80px;}
+    .mod-header{margin-bottom:24px;}
+    .mod-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+    .mod-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.4;}
+    .mod-desc{font-size:13px;color:var(--text2);line-height:1.75;}
+    .sec{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+    .sec-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+    .sec-title{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.4;}
+    .sec-body{font-size:13px;color:var(--text2);line-height:1.8;}
+    .sec-body p{margin-bottom:10px;}.sec-body p:last-child{margin-bottom:0;}.sec-body strong{color:var(--text);}
+    .hl{border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:13px 15px;margin:13px 0;font-size:13px;color:var(--text2);line-height:1.75;background:var(--blue-bg);}
+    .hl strong{color:var(--blue);}
+    .hl-purple{background:var(--purple-bg);border-left-color:var(--purple);}.hl-purple strong{color:var(--purple);}
+    .hl-teal{background:var(--teal-bg);border-left-color:var(--teal);}.hl-teal strong{color:var(--teal);}
+
+    /* 24조건 카드 */
+    .paccaya-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0;}
+    .pc-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s;}
+    .pc-card:hover{border-color:var(--border2);background:var(--bg2);}
+    .pc-card.sel{border-color:var(--accent);background:var(--purple-bg);}
+    .pc-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px;}
+    .pc-pali{font-size:10px;color:var(--text3);font-style:italic;}
+    .pc-detail{display:none;background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:10px;padding:14px;margin-top:4px;font-size:13px;color:var(--text2);line-height:1.7;}
+    .pc-detail.show{display:block;}
+
+    /* 수행 연결 카드 */
+    .practice-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;}
+    .practice-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+    .practice-step:last-child{margin-bottom:0;}
+    .ps-num{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:1px;}
+    .ps-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+    .ps-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+    /* 퀴즈 */
+    .quiz-num{font-size:11px;color:var(--text3);margin-bottom:8px;}
+    .quiz-q{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.55;}
+    .quiz-opts{display:flex;flex-direction:column;gap:7px;}
+    .quiz-opt{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:transparent;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Noto Sans KR',sans-serif;}
+    .quiz-opt:hover:not(:disabled){border-color:var(--accent);color:var(--text);}
+    .quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+    .quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+    .quiz-result{display:none;margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12px;line-height:1.6;}
+    .quiz-result.show{display:block;}
+    .quiz-result.ok{background:var(--green-bg);color:var(--green);}
+    .quiz-result.fail{background:var(--red-bg);color:var(--red);}
+    .done-banner{display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:12px;padding:20px;text-align:center;margin-top:14px;}
+    .done-banner.show{display:block;}
+    .done-title{font-size:16px;font-weight:500;color:var(--green);margin-bottom:5px;}
+    .done-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+    .done-btn{display:inline-block;padding:8px 20px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:500;text-decoration:none;margin:4px;}
+    .done-btn-sec{display:inline-block;padding:8px 20px;border-radius:99px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:4px;}
+    @media(max-width:480px){.content{padding:20px 14px 60px;}.paccaya-grid{grid-template-columns:1fr;}.sub-tabbar{top:68px;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a class="topbar-logo" href="index.html"><div class="logo-dot"></div>아비담마 교육 프로그램</a>
+  <div class="main-nav">
+    <a class="nav-item" href="index.html">홈</a>
+    <a class="nav-item" href="intro.html">입문</a>
+    <a class="nav-item" href="core-concepts.html">핵심개념</a>
+    <a class="nav-item" href="vithi.html">인식과정</a>
+    <a class="nav-item" href="life-rebirth.html">삶과재생</a>
+    <button class="nav-item on">심화·응용</button>
+  </div>
+</div>
+<div class="sub-tabbar">
+  <button class="sub-tab on" onclick="switchSub(0)">조건 관계(Paṭṭhāna)</button>
+  <button class="sub-tab" onclick="switchSub(1)">수행과의 연결</button>
+</div>
+
+<!-- 패널 0: 조건 관계 -->
+<div class="panel on" id="panel-0">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">심화·응용 · 첫 번째 모듈</div>
+      <div class="mod-title">조건 관계 (Paṭṭhāna)</div>
+      <div class="mod-desc">발취론(Paṭṭhāna)에서 설명하는 24가지 조건 관계를 탐색합니다. 아비담마의 정점입니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">조건 관계(Paccaya)란?</div>
+      <div class="sec-body">
+        <p>아비담마의 마지막 논서 <strong>발취론(Paṭṭhāna)</strong>은 법과 법 사이의 <strong>24가지 조건 관계</strong>를 설명합니다.</p>
+        <div class="hl hl-purple">
+          모든 현상은 홀로 일어나지 않습니다.<br>
+          반드시 <strong>조건(Paccaya)</strong>에 의지하여 일어납니다.<br>
+          이 조건의 종류가 24가지입니다.
+        </div>
+        <p>발취론은 너무 방대하여 미얀마에서 낭송하는 데만 수개월이 걸린다고 전해집니다.</p>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">24 조건 관계 탐색</div>
+      <div class="sec-title">카드를 클릭해 상세 내용을 보세요</div>
+      <div class="paccaya-grid" id="paccaya-grid"></div>
+      <div class="pc-detail" id="pc-detail"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">조건 관계 — 확인</div>
+      <div id="q0-area"></div>
+      <div class="done-banner" id="d0-banner">
+        <div class="done-title">✓ 완료!</div><div class="done-sub">마지막 모듈 — 수행과의 연결입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(1)">수행과의 연결 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 패널 1: 수행과의 연결 -->
+<div class="panel" id="panel-1">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">심화·응용 · 두 번째 모듈</div>
+      <div class="mod-title">수행과의 연결</div>
+      <div class="mod-desc">아비담마 이론이 실제 위빠사나·사마타 수행에 어떻게 적용되는지를 살펴봅니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">아비담마와 수행의 관계</div>
+      <div class="sec-body">
+        <p>아비담마는 단순한 철학이 아닙니다. 수행을 깊게 하는 <strong>실용적 지도</strong>입니다.</p>
+        <div class="hl hl-teal">
+          수행 중 일어나는 현상을 아비담마로 이해하면,<br>
+          "지금 어떤 마음이 일어나고 있는가"를 <strong>정밀하게 알 수 있습니다.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">위빠사나 수행과 아비담마</div>
+      <div class="sec-title">수행 단계별 아비담마 적용</div>
+      <div class="practice-card">
+        <div class="practice-step">
+          <div class="ps-num">1</div>
+          <div><div class="ps-title">마음챙김 (Sati) 확립</div><div class="ps-desc">아비담마에서 마음챙김(Sati)은 아름다운 마음부수 25종 중 하나입니다. 대상을 잊지 않고 지켜보는 것. 이것이 위빠사나의 출발점입니다.</div></div>
+        </div>
+        <div class="practice-step">
+          <div class="ps-num">2</div>
+          <div><div class="ps-title">찰나 생멸 관찰</div><div class="ps-desc">아비담마에서 마음은 찰나적으로 생멸합니다. 17심찰나 인식과정을 이해하면, 수행 중 마음의 생멸을 더 명확하게 관찰할 수 있습니다.</div></div>
+        </div>
+        <div class="practice-step">
+          <div class="ps-num">3</div>
+          <div><div class="ps-title">마음부수 식별</div><div class="ps-desc">수행 중 탐욕(Lobha)·성냄(Dosa)·어리석음(Moha)이 일어날 때, 이것이 불선 마음부수임을 알면 집착하지 않고 알아차릴 수 있습니다.</div></div>
+        </div>
+        <div class="practice-step">
+          <div class="ps-num">4</div>
+          <div><div class="ps-title">무아(無我) 통찰</div><div class="ps-desc">"나"라고 생각하는 것이 실제로는 마음·마음부수·물질의 연속적 과정임을 아비담마로 이해하면, 무아(Anattā) 통찰이 깊어집니다.</div></div>
+        </div>
+        <div class="practice-step">
+          <div class="ps-num">5</div>
+          <div><div class="ps-title">선정(禪定) 수행과 아비담마</div><div class="ps-desc">선정지(禪支)가 탈락하는 과정을 아비담마로 이해하면, 선정의 깊이를 스스로 확인하고 더 깊은 선정으로 나아갈 수 있습니다.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">일상 수행에서의 활용</div>
+      <div class="sec-title">명상 중 아비담마 적용 예시</div>
+      <div class="sec-body">
+        <p><strong>호흡 명상 중:</strong> 숨을 알아차리는 순간, 의문 인식과정이 일어납니다. 전향심 → 7번의 속행(자와나) → 등록심 순서로 진행됩니다. 의도(Cetanā)가 이 과정 전체를 이끕니다.</p>
+        <p><strong>망상이 일어날 때:</strong> 탐욕 뿌리 마음 또는 진 뿌리 마음이 일어난 것입니다. 이를 알아차리는 순간, 그 마음은 이미 사라지고 새로운 마음이 일어납니다.</p>
+        <p><strong>졸음이 올 때:</strong> 해태(Thīna)·혼침(Middha) 마음부수가 작동하는 것입니다. 노력(Viriya) 마음부수를 강화하는 것이 대치법입니다.</p>
+        <div class="hl hl-teal">
+          아비담마는 수행의 지도입니다.<br>
+          지도가 있으면 길을 잃지 않습니다.
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">수행과의 연결 — 확인</div>
+      <div id="q1-area"></div>
+      <div class="done-banner" id="d1-banner">
+        <div class="done-title">🎉 전체 과정 완료!</div>
+        <div class="done-sub">아비담마 교육 프로그램의 모든 모듈을 마쳤습니다.<br>수행에 깊이를 더하시길 바랍니다. 🙏</div>
+        <a class="done-btn" href="index.html">홈으로 돌아가기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded',function(){
+  const hash=location.hash.replace('#','');
+  const map={patthana:0,practice:1};
+  if(hash&&map[hash]!==undefined)switchSub(map[hash]);
+  buildPaccaya();
+});
+function switchSub(i){
+  document.querySelectorAll('.sub-tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const paccayas=[
+  {name:'인연(Hetu)',pali:'Hetu-paccaya',desc:'원인이 결과를 조건 짓는 것. 탐·진·치와 탐없음·진없음·치없음이 함께하는 마음과 마음부수를 조건 짓습니다.'},
+  {name:'소연(Ārammaṇa)',pali:'Ārammaṇa-paccaya',desc:'대상이 마음을 조건 짓는 것. 모든 마음은 대상에 의지하여 일어납니다.'},
+  {name:'증상(Adhipati)',pali:'Adhipati-paccaya',desc:'지배하는 것이 다른 것을 강하게 조건 짓는 것. 의욕·정진·마음·지혜가 지배할 때 작용합니다.'},
+  {name:'무간(Anantara)',pali:'Anantara-paccaya',desc:'앞 찰나의 마음이 바로 뒤의 마음을 조건 짓는 것. 인식과정에서 찰나들이 끊어짐 없이 이어집니다.'},
+  {name:'등무간(Samanantara)',pali:'Samanantara-paccaya',desc:'무간과 동일하지만 더 강조된 의미. 앞 마음이 즉시 뒤 마음의 자리를 만들어줍니다.'},
+  {name:'구생(Sahajāta)',pali:'Sahajāta-paccaya',desc:'함께 일어난 것이 서로를 조건 짓는 것. 마음과 마음부수, 마음과 심장 물질이 서로 조건이 됩니다.'},
+  {name:'호상(Aññamañña)',pali:'Aññamañña-paccaya',desc:'서로가 서로를 조건 짓는 것. 4대 원소가 서로를 지지합니다.'},
+  {name:'의지(Nissaya)',pali:'Nissaya-paccaya',desc:'기반으로 의지하는 것. 마음은 심장 물질에, 안식은 눈 물질에 의지합니다.'},
+  {name:'친의지(Upanissaya)',pali:'Upanissaya-paccaya',desc:'강하게 의지하는 조건. 과거 경험·습관·믿음 등이 현재 마음에 강한 영향을 줍니다.'},
+  {name:'전생(Purejāta)',pali:'Purejāta-paccaya',desc:'먼저 일어난 것이 나중에 일어난 것을 조건 짓는 것. 6처(감각기관)가 먼저 있어야 의식이 일어납니다.'},
+  {name:'후생(Pacchājāta)',pali:'Pacchājāta-paccaya',desc:'나중에 일어난 것이 먼저 일어난 것을 지지하는 것. 나중에 일어난 마음이 먼저 생긴 몸을 지지합니다.'},
+  {name:'반복(Āsevana)',pali:'Āsevana-paccaya',desc:'반복이 조건이 되는 것. 속행(자와나)이 반복될수록 업의 힘이 강해집니다. 수행 습관의 근거입니다.'},
+  {name:'업(Kamma)',pali:'Kamma-paccaya',desc:'의도(Cetanā)가 업으로서 과보를 조건 짓는 것. 선업·불선업이 현재와 미래의 결과를 만들어냅니다.'},
+  {name:'과보(Vipāka)',pali:'Vipāka-paccaya',desc:'과보심이 서로를 조건 짓는 것. 과보 마음들은 소극적이고 평화롭습니다.'},
+  {name:'음식(Āhāra)',pali:'Āhāra-paccaya',desc:'영양분이 되는 조건. 물질적 음식은 몸을, 의도·접촉·의식은 마음과 몸을 지지합니다.'},
+  {name:'기능(Indriya)',pali:'Indriya-paccaya',desc:'지배적 기능이 조건이 되는 것. 22가지 기능(眼根·耳根·命根·信根 등)이 각자의 영역을 지배합니다.'},
+  {name:'선정(Jhāna)',pali:'Jhāna-paccaya',desc:'선정지(禪支)들이 서로를 강하게 조건 짓는 것. 선정에서 일으킨 생각·지속적 고찰·희열 등이 함께 작용합니다.'},
+  {name:'도(Magga)',pali:'Magga-paccaya',desc:'도의 구성요소들이 서로를 조건 짓는 것. 팔정도의 요소들이 함께 작용하여 출세간 마음을 조건 짓습니다.'},
+  {name:'상응(Sampayutta)',pali:'Sampayutta-paccaya',desc:'함께 일어나 서로 결합하는 것. 마음과 마음부수가 동일한 대상·토대·생멸 시점을 가지며 서로 조건이 됩니다.'},
+  {name:'불상응(Vippayutta)',pali:'Vippayutta-paccaya',desc:'결합하지 않고 조건이 되는 것. 마음과 물질이 서로 다른 성질이지만 조건 관계를 형성합니다.'},
+  {name:'유(Atthi)',pali:'Atthi-paccaya',desc:'존재함으로써 조건이 되는 것. 현재 존재하는 것이 다른 것의 조건이 됩니다.'},
+  {name:'무(Natthi)',pali:'Natthi-paccaya',desc:'없어짐으로써 조건이 되는 것. 앞 찰나의 마음이 사라짐으로써 뒤 마음이 일어날 자리가 생깁니다.'},
+  {name:'리(Vigata)',pali:'Vigata-paccaya',desc:'떠남으로써 조건이 되는 것. 무간·등무간과 유사. 앞 마음이 완전히 사라져야 뒤 마음이 옵니다.'},
+  {name:'불리(Avigata)',pali:'Avigata-paccaya',desc:'떠나지 않음으로써 조건이 되는 것. 유(Atthi)와 유사. 현재 존재하는 것이 조건이 됩니다.'},
+];
+
+function buildPaccaya(){
+  const grid=document.getElementById('paccaya-grid');
+  if(!grid)return;
+  paccayas.forEach((p,i)=>{
+    const card=document.createElement('div');
+    card.className='pc-card';
+    card.innerHTML=`<div class="pc-name">${i+1}. ${p.name}</div><div class="pc-pali">${p.pali}</div>`;
+    card.onclick=()=>{
+      document.querySelectorAll('.pc-card').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      const detail=document.getElementById('pc-detail');
+      detail.className='pc-detail show';
+      detail.innerHTML=`<strong style="color:var(--purple);">${p.name} (${p.pali})</strong><br><br>${p.desc}`;
+    };
+    grid.appendChild(card);
+  });
+}
+
+function makeQuiz(areaId,bannerId,quizzes){
+  let idx=0;const fn='ans_'+areaId;
+  function render(){
+    if(idx>=quizzes.length){document.getElementById(areaId).innerHTML='<p style="font-size:14px;color:var(--green);font-weight:500;text-align:center;padding:14px 0;">🎉 퀴즈 완료!</p>';document.getElementById(bannerId).classList.add('show');return;}
+    const q=quizzes[idx];
+    document.getElementById(areaId).innerHTML=`<div class="quiz-num">문제 ${idx+1} / ${quizzes.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="${fn}(${i})">${o}</button>`).join('')}</div><div class="quiz-result" id="qr_${areaId}"></div>`;
+    window[fn]=function(i){
+      document.querySelectorAll(`#${areaId} .quiz-opt`).forEach((o,j)=>{o.disabled=true;if(j===q.ans)o.classList.add('correct');else if(j===i)o.classList.add('wrong');});
+      const res=document.getElementById('qr_'+areaId);
+      res.className='quiz-result show '+(i===q.ans?'ok':'fail');
+      res.innerHTML=i===q.ans?'✓ 정답! '+q.explain:'✗ 정답은 <strong>"'+q.opts[q.ans]+'"</strong>입니다. '+q.explain;
+      setTimeout(()=>{idx++;render();},2000);
+    };
+  }
+  render();
+}
+makeQuiz('q0-area','d0-banner',[
+  {q:"발취론(Paṭṭhāna)에서 설명하는 조건 관계의 수는?",opts:["12가지","18가지","24가지","52가지"],ans:2,explain:"발취론은 24가지 조건 관계를 설명합니다. 이것이 아비담마의 정점으로 불립니다."},
+  {q:"반복(Āsevana) 조건이 설명하는 것은?",opts:["업이 과보를 만드는 것","속행이 반복될수록 업의 힘이 강해지는 것","마음과 물질의 관계","대상이 마음을 조건 짓는 것"],ans:1,explain:"반복(Āsevana) 조건은 속행(자와나)이 반복될수록 습관과 업의 힘이 강해짐을 설명합니다. 수행 습관의 이론적 근거입니다."},
+]);
+makeQuiz('q1-area','d1-banner',[
+  {q:"위빠사나 수행에서 졸음이 올 때 작동하는 불선 마음부수는?",opts:["탐욕·사견","해태·혼침","성냄·질투","의심·후회"],ans:1,explain:"졸음은 해태(Thīna)와 혼침(Middha) 마음부수가 작동할 때 나타납니다. 노력(Viriya)을 강화하는 것이 대치법입니다."},
+  {q:"아비담마에서 수행 중 망상이 일어났다고 알아차리는 순간, 그 망상의 마음은?",opts:["더 강해진다","지속된다","이미 사라졌다","억압된다"],ans:2,explain:"마음은 찰나적으로 생멸합니다. 알아차리는 순간은 이미 새로운 마음이 일어난 것이므로, 망상의 마음은 이미 사라진 상태입니다."},
+]);
+</script>
+</body>
+</html>

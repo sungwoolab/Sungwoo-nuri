@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>핵심개념 — 아비담마 교육 프로그램</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f8f7f4; --bg2:#ffffff; --bg3:#f1efe9;
+      --border:#e4e2db; --border2:#c8c5bc;
+      --text:#1a1a1a; --text2:#555050; --text3:#9e9990;
+      --accent:#6b46c1;
+      --green:#2e7d52; --green-bg:#edf7f1;
+      --blue:#1a6faa; --blue-bg:#e8f3fb;
+      --amber:#b45309; --amber-bg:#fef3e2;
+      --teal:#0f766e; --teal-bg:#f0fdfa;
+      --rose:#be185d; --rose-bg:#fdf2f8;
+      --purple:#7c3aed; --purple-bg:#f5f3ff;
+      --red:#b91c1c; --red-bg:#fef2f2;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;}
+
+    /* ── 상단 메뉴 바 ── */
+    .topbar{position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .topbar-logo{display:flex;align-items:center;gap:8px;padding:11px 24px 0;font-size:13px;font-weight:500;color:var(--text);text-decoration:none;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .main-nav{display:flex;overflow-x:auto;padding:0 16px;}
+    .main-nav::-webkit-scrollbar{height:0;}
+    .nav-item{flex-shrink:0;padding:9px 12px 8px;font-size:12px;font-weight:500;color:var(--text3);text-decoration:none;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .nav-item:hover{color:var(--text2);}
+    .nav-item.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+
+    /* ── 서브 탭 바 ── */
+    .sub-tabbar{background:var(--bg3);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;position:sticky;top:72px;z-index:199;}
+    .sub-tabbar::-webkit-scrollbar{height:0;}
+    .sub-tab{flex-shrink:0;padding:8px 14px 7px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .sub-tab:hover{color:var(--text2);}
+    .sub-tab.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+
+    /* ── 패널 ── */
+    .panel{display:none;}
+    .panel.on{display:block;}
+    .content{max-width:680px;margin:0 auto;padding:28px 20px 80px;}
+
+    /* ── 모듈 헤더 ── */
+    .mod-header{margin-bottom:24px;}
+    .mod-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+    .mod-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.4;}
+    .mod-desc{font-size:13px;color:var(--text2);line-height:1.75;}
+
+    /* ── 섹션 카드 ── */
+    .sec{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+    .sec-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+    .sec-title{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.4;}
+    .sec-body{font-size:13px;color:var(--text2);line-height:1.8;}
+    .sec-body p{margin-bottom:10px;}
+    .sec-body p:last-child{margin-bottom:0;}
+    .sec-body strong{color:var(--text);}
+    .hl{border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:13px 15px;margin:13px 0;font-size:13px;color:var(--text2);line-height:1.75;background:var(--blue-bg);}
+    .hl strong{color:var(--blue);}
+    .hl-amber{background:var(--amber-bg);border-left-color:var(--amber);}
+    .hl-amber strong{color:var(--amber);}
+    .hl-teal{background:var(--teal-bg);border-left-color:var(--teal);}
+    .hl-teal strong{color:var(--teal);}
+    .hl-rose{background:var(--rose-bg);border-left-color:var(--rose);}
+    .hl-rose strong{color:var(--rose);}
+
+    /* ── 마음 분류 트리 ── */
+    .tree-root{margin:14px 0;}
+    .tree-node{margin-bottom:8px;}
+    .tree-head{display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:10px;cursor:pointer;border:1px solid var(--border);background:var(--bg2);transition:all 0.15s;}
+    .tree-head:hover{border-color:var(--border2);}
+    .tree-head.open{border-color:var(--blue);background:var(--blue-bg);}
+    .tree-icon{font-size:14px;color:var(--text3);transition:transform 0.2s;flex-shrink:0;}
+    .tree-head.open .tree-icon{transform:rotate(90deg);color:var(--blue);}
+    .tree-label{font-size:13px;font-weight:500;color:var(--text);flex:1;}
+    .tree-head.open .tree-label{color:var(--blue);}
+    .tree-count{font-size:11px;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:99px;}
+    .tree-head.open .tree-count{background:rgba(26,111,170,0.15);color:var(--blue);}
+    .tree-children{display:none;margin:4px 0 4px 20px;border-left:2px solid var(--border);padding-left:12px;}
+    .tree-children.open{display:block;}
+    .tree-leaf{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:4px;background:var(--bg3);border:1px solid var(--border);font-size:12px;}
+    .tree-leaf-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+    .leaf-name{font-weight:500;color:var(--text);margin-bottom:2px;line-height:1.3;}
+    .leaf-desc{font-size:11px;color:var(--text3);line-height:1.4;}
+
+    /* ── 마음부수 그리드 ── */
+    .ceta-group{margin-bottom:18px;}
+    .ceta-group-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+    .ceta-group-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .ceta-group-name{font-size:13px;font-weight:500;color:var(--text);}
+    .ceta-group-count{font-size:11px;color:var(--text3);}
+    .ceta-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .ceta-tag{font-size:12px;padding:4px 11px;border-radius:99px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;}
+    .ceta-tag:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+    .ct-common{background:var(--green-bg);color:var(--green);border-color:#bbf7d0;}
+    .ct-unwhole{background:var(--red-bg);color:var(--red);border-color:#fecaca;}
+    .ct-beautiful{background:var(--purple-bg);color:var(--purple);border-color:#ddd6fe;}
+    .ceta-detail{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7;}
+    .ceta-detail.show{display:block;}
+
+    /* ── 물질 다이어그램 ── */
+    .rupa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+    .rupa-card{border-radius:11px;padding:15px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+    .rupa-card:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,0.06);}
+    .rupa-card.sel{border-width:2px;}
+    .rc-mahabhuta{background:#fef9ee;border-color:#fde68a;}
+    .rc-mahabhuta.sel{border-color:var(--amber);}
+    .rc-pasada{background:#f0faf5;border-color:#bbf7d0;}
+    .rc-pasada.sel{border-color:var(--green);}
+    .rc-gocara{background:var(--blue-bg);border-color:#bfdbfe;}
+    .rc-gocara.sel{border-color:var(--blue);}
+    .rc-other{background:var(--bg3);border-color:var(--border2);}
+    .rc-other.sel{border-color:var(--text3);}
+    .rupa-card-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;}
+    .rupa-card-count{font-size:11px;margin-bottom:6px;}
+    .rupa-card-items{font-size:11px;color:var(--text3);line-height:1.5;}
+    .rupa-detail{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:4px;font-size:13px;color:var(--text2);line-height:1.75;}
+    .rupa-detail.show{display:block;}
+
+    /* ── 열반 다이어그램 ── */
+    .nibbana-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+    .nib-card{border-radius:12px;padding:18px;border:1px solid var(--border);}
+    .nib-sa{background:var(--teal-bg);border-color:#5eead4;}
+    .nib-pa{background:var(--rose-bg);border-color:#f9a8d4;}
+    .nib-title{font-size:13px;font-weight:500;margin-bottom:4px;}
+    .nib-sa .nib-title{color:var(--teal);}
+    .nib-pa .nib-title{color:var(--rose);}
+    .nib-pali{font-size:10px;color:var(--text3);font-style:italic;margin-bottom:8px;}
+    .nib-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+    /* ── 퀴즈 ── */
+    .quiz-num{font-size:11px;color:var(--text3);margin-bottom:8px;}
+    .quiz-q{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.55;}
+    .quiz-opts{display:flex;flex-direction:column;gap:7px;}
+    .quiz-opt{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:transparent;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Noto Sans KR',sans-serif;}
+    .quiz-opt:hover:not(:disabled){border-color:var(--accent);color:var(--text);}
+    .quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+    .quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+    .quiz-result{display:none;margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12px;line-height:1.6;}
+    .quiz-result.show{display:block;}
+    .quiz-result.ok{background:var(--green-bg);color:var(--green);}
+    .quiz-result.fail{background:var(--red-bg);color:var(--red);}
+
+    /* ── 완료 배너 ── */
+    .done-banner{display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:12px;padding:20px;text-align:center;margin-top:14px;}
+    .done-banner.show{display:block;}
+    .done-title{font-size:15px;font-weight:500;color:var(--green);margin-bottom:5px;}
+    .done-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+    .done-btn{display:inline-block;padding:8px 20px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:500;text-decoration:none;margin:4px;}
+    .done-btn-sec{display:inline-block;padding:8px 20px;border-radius:99px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:4px;}
+
+    @media(max-width:480px){
+      .content{padding:20px 14px 60px;}
+      .rupa-grid{grid-template-columns:1fr;}
+      .nibbana-compare{grid-template-columns:1fr;}
+      .sub-tabbar{top:68px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── 상단 고정 메뉴 바 ── -->
+<div class="topbar">
+  <a class="topbar-logo" href="index.html">
+    <div class="logo-dot"></div>아비담마 교육 프로그램
+  </a>
+  <div class="main-nav">
+    <a class="nav-item" href="index.html">홈</a>
+    <a class="nav-item" href="intro.html">입문</a>
+    <button class="nav-item on">핵심개념</button>
+    <a class="nav-item" href="abhidhamma_vithi.html">인식과정</a>
+    <button class="nav-item">삶과재생</button>
+    <button class="nav-item">심화·응용</button>
+  </div>
+</div>
+
+<!-- ── 서브 탭 바 ── -->
+<div class="sub-tabbar">
+  <button class="sub-tab on" onclick="switchSub(0)">마음 89종</button>
+  <button class="sub-tab" onclick="switchSub(1)">마음부수 52종</button>
+  <button class="sub-tab" onclick="switchSub(2)">물질 28종</button>
+  <button class="sub-tab" onclick="switchSub(3)">열반(Nibbāna)</button>
+</div>
+
+<!-- ════════════════════════════
+     패널 0: 마음 89종
+════════════════════════════ -->
+<div class="panel on" id="panel-0">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">핵심개념 · 첫 번째 모듈</div>
+      <div class="mod-title">마음(Citta) 89/121종</div>
+      <div class="mod-desc">아비담마는 마음을 89종(또는 121종)으로 분류합니다. 각 분류를 클릭해 펼쳐보세요.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">마음이란 무엇인가?</div>
+      <div class="sec-body">
+        <p><strong>마음(Citta)</strong>은 대상을 아는 것(knowing), 인식하는 것입니다. 마음은 항상 대상을 가지며, 홀로 일어나지 않고 반드시 마음부수들과 함께 일어납니다.</p>
+        <div class="hl">
+          마음은 <strong>찰나(刹那)</strong>적으로 생멸합니다. 한 번 일어났다 사라지는 속도는 번개보다 빠릅니다.<br>
+          아비담마에서는 이 찰나적 마음을 <strong>89종(또는 121종)</strong>으로 정밀하게 분류합니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">인터랙티브 분류 트리</div>
+      <div class="sec-title">마음 89종 분류</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">각 항목을 클릭하면 세부 내용이 펼쳐집니다.</p>
+      <div class="tree-root">
+
+        <!-- 욕계 -->
+        <div class="tree-node">
+          <div class="tree-head" onclick="toggleTree(this)">
+            <span class="tree-icon">▶</span>
+            <span class="tree-label">욕계 마음 (Kāmāvacara)</span>
+            <span class="tree-count">54종</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node">
+              <div class="tree-head" onclick="toggleTree(this)">
+                <span class="tree-icon">▶</span>
+                <span class="tree-label">불선 마음 (Akusala)</span>
+                <span class="tree-count">12종</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#ef4444;"></div><div><div class="leaf-name">탐 뿌리 마음 (Lobha-mūla)</div><div class="leaf-desc">8종 — 탐욕과 함께하는 마음. 사견·자만 수반 여부, 촉발 여부 등으로 세분</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#ef4444;"></div><div><div class="leaf-name">진 뿌리 마음 (Dosa-mūla)</div><div class="leaf-desc">2종 — 성냄과 함께하는 마음. 걱정·자책 수반 여부로 구분</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#ef4444;"></div><div><div class="leaf-name">치 뿌리 마음 (Moha-mūla)</div><div class="leaf-desc">2종 — 어리석음과 함께하는 마음. 들뜸·의심 수반 여부로 구분</div></div></div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-head" onclick="toggleTree(this)">
+                <span class="tree-icon">▶</span>
+                <span class="tree-label">무인 마음 (Ahetuka)</span>
+                <span class="tree-count">18종</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#6b7280;"></div><div><div class="leaf-name">불선 과보 마음</div><div class="leaf-desc">7종 — 불선업의 과보로 일어나는 마음 (오식·수용심·조사심 등)</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#6b7280;"></div><div><div class="leaf-name">선 과보 마음</div><div class="leaf-desc">8종 — 선업의 과보로 일어나는 마음</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#6b7280;"></div><div><div class="leaf-name">작용 마음</div><div class="leaf-desc">3종 — 5문 전향심·의문 전향심·미소 짓는 마음</div></div></div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-head" onclick="toggleTree(this)">
+                <span class="tree-icon">▶</span>
+                <span class="tree-label">욕계 아름다운 마음 (Kāma-sobhana)</span>
+                <span class="tree-count">24종</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#16a34a;"></div><div><div class="leaf-name">욕계 선 마음</div><div class="leaf-desc">8종 — 선업을 짓는 마음. 희열·지혜·촉발 여부로 세분</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#16a34a;"></div><div><div class="leaf-name">욕계 선 과보 마음</div><div class="leaf-desc">8종 — 선업의 과보로 재생연결 등에 작용</div></div></div>
+                <div class="tree-leaf"><div class="tree-leaf-dot" style="background:#16a34a;"></div><div><div class="leaf-name">욕계 선 작용 마음</div><div class="leaf-desc">8종 — 아라한의 욕계 마음 (업을 짓지 않음)</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 색계 -->
+        <div class="tree-node">
+          <div class="tree-head" onclick="toggleTree(this)">
+            <span class="tree-icon">▶</span>
+            <span class="tree-label">색계 마음 (Rūpāvacara)</span>
+            <span class="tree-count">15종</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--blue);"></div><div><div class="leaf-name">색계 선 마음</div><div class="leaf-desc">5종 — 색계 선정(1~5선)의 마음. 선정 수준에 따라 심(尋)·사(伺)·희(喜) 탈락</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--blue);"></div><div><div class="leaf-name">색계 과보 마음</div><div class="leaf-desc">5종 — 색계 선정 수행의 과보. 색계 천상에 재생연결</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--blue);"></div><div><div class="leaf-name">색계 작용 마음</div><div class="leaf-desc">5종 — 아라한의 색계 마음</div></div></div>
+          </div>
+        </div>
+
+        <!-- 무색계 -->
+        <div class="tree-node">
+          <div class="tree-head" onclick="toggleTree(this)">
+            <span class="tree-icon">▶</span>
+            <span class="tree-label">무색계 마음 (Arūpāvacara)</span>
+            <span class="tree-count">12종</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--teal);"></div><div><div class="leaf-name">공무변처 마음</div><div class="leaf-desc">선·과보·작용 각 1종 — 허공이 무한함을 대상으로 함</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--teal);"></div><div><div class="leaf-name">식무변처 마음</div><div class="leaf-desc">선·과보·작용 각 1종 — 의식이 무한함을 대상으로 함</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--teal);"></div><div><div class="leaf-name">무소유처 마음</div><div class="leaf-desc">선·과보·작용 각 1종 — 아무것도 없음을 대상으로 함</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--teal);"></div><div><div class="leaf-name">비상비비상처 마음</div><div class="leaf-desc">선·과보·작용 각 1종 — 인식이 있는 것도 없는 것도 아님</div></div></div>
+          </div>
+        </div>
+
+        <!-- 출세간 -->
+        <div class="tree-node">
+          <div class="tree-head" onclick="toggleTree(this)">
+            <span class="tree-icon">▶</span>
+            <span class="tree-label">출세간 마음 (Lokuttara)</span>
+            <span class="tree-count">8종 (40종)</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--purple);"></div><div><div class="leaf-name">예류도·과 (Sotāpatti)</div><div class="leaf-desc">도심+과심 — 사견·의심 소멸. 최대 7번 더 윤회</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--purple);"></div><div><div class="leaf-name">일래도·과 (Sakadāgāmi)</div><div class="leaf-desc">도심+과심 — 탐·진·치 약화. 한 번 더 욕계 내생</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--purple);"></div><div><div class="leaf-name">불환도·과 (Anāgāmi)</div><div class="leaf-desc">도심+과심 — 욕계 탐·진 완전 소멸. 욕계에 다시 오지 않음</div></div></div>
+            <div class="tree-leaf"><div class="tree-leaf-dot" style="background:var(--purple);"></div><div><div class="leaf-name">아라한도·과 (Arahatta)</div><div class="leaf-desc">도심+과심 — 모든 번뇌 소멸. 완전한 해탈</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 퀴즈 -->
+    <div class="sec">
+      <div class="sec-tag">확인 퀴즈</div>
+      <div class="sec-title">마음 89종 — 확인</div>
+      <div id="q0-area"></div>
+      <div class="done-banner" id="d0-banner">
+        <div class="done-title">✓ 완료!</div>
+        <div class="done-sub">다음은 마음부수 52종입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(1)">마음부수 52종 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     패널 1: 마음부수 52종
+════════════════════════════ -->
+<div class="panel" id="panel-1">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">핵심개념 · 두 번째 모듈</div>
+      <div class="mod-title">마음부수(Cetasika) 52종</div>
+      <div class="mod-desc">마음과 함께 일어나 마음을 돕고 특성을 부여하는 52가지 심리적 요소입니다. 태그를 클릭하면 상세 설명이 나타납니다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">마음부수란?</div>
+      <div class="sec-body">
+        <p>마음이 "대상을 안다"면, 마음부수는 <strong>"어떻게 아는가"</strong>를 결정합니다.</p>
+        <div class="hl hl-teal">
+          마음부수는 마음 없이 홀로 일어날 수 없습니다.<br>
+          마음이 선(善)하면 선한 마음부수가, 불선하면 불선 마음부수가 함께 일어납니다.
+        </div>
+        <p>52종은 <strong>공통 13종 + 불선 14종 + 아름다운 25종</strong>으로 분류됩니다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">인터랙티브 목록</div>
+      <div class="sec-title">52가지 마음부수</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:16px;">태그를 클릭하면 상세 설명이 나타납니다.</p>
+
+      <div class="ceta-group">
+        <div class="ceta-group-head">
+          <div class="ceta-group-dot" style="background:var(--green);"></div>
+          <div class="ceta-group-name">공통 마음부수</div>
+          <div class="ceta-group-count">13종 — 모든 마음에 공통으로 작동</div>
+        </div>
+        <div class="ceta-tags">
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'접촉(Phassa)','모든 마음·마음부수·대상이 만나는 것. 인식의 첫 번째 조건.')">접촉 Phassa</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'느낌(Vedanā)','즐거운·괴로운·중립적 느낌. 모든 경험에 항상 존재.')">느낌 Vedanā</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'인식(Saññā)','대상의 특징을 인식하고 기억하게 함. 재인식의 토대.')">인식 Saññā</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'의도(Cetanā)','마음을 이끌고 조직하는 역할. 업(業)을 형성하는 핵심. 속행 찰나에서 전체를 리드함.')">의도 Cetanā</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'집중(Ekaggatā)','마음을 하나의 대상에 모음. 삼매(定)의 토대.')">집중 Ekaggatā</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'생명기능(Jīvitindriya)','마음과 마음부수를 살아있게 유지하는 기능.')">생명기능 Jīvitindriya</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'주의기울임(Manasikāra)','마음을 대상으로 향하게 함. 인식의 방향을 설정.')">주의기울임 Manasikāra</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'일으킨 생각(Vitakka)','마음을 대상으로 향해 올리는 것. 초선에서 활발히 작동.')">일으킨 생각 Vitakka</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'지속적 고찰(Vicāra)','대상 위에서 마음이 머무르며 살피는 것. 초선·이선에서 작동.')">지속적 고찰 Vicāra</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'결의(Adhimokkha)','대상을 확고하게 결정함. 망설임 없이 대상을 붙잡음.')">결의 Adhimokkha</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'노력(Viriya)','정진. 마음이 대상을 향해 힘을 내는 것.')">노력 Viriya</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'희열(Pīti)','기쁨과 희열. 기쁨이 몸과 마음을 채우는 것. 3선까지 작동.')">희열 Pīti</span>
+          <span class="ceta-tag ct-common" onclick="showCeta(this,'의욕(Chanda)','행동하고자 하는 의욕. 탐욕과 다름 — 청정한 바람.')">의욕 Chanda</span>
+        </div>
+      </div>
+
+      <div class="ceta-group">
+        <div class="ceta-group-head">
+          <div class="ceta-group-dot" style="background:var(--red);"></div>
+          <div class="ceta-group-name">불선 마음부수</div>
+          <div class="ceta-group-count">14종 — 불선 마음에만 작동</div>
+        </div>
+        <div class="ceta-tags">
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'어리석음(Moha)','근본 무명. 실재를 있는 그대로 보지 못함. 모든 불선 마음에 공통.')">어리석음 Moha</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'양심 없음(Ahirika)','잘못에 부끄러움이 없음.')">양심 없음 Ahirika</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'수치심 없음(Anottappa)','잘못을 두려워하지 않음.')">수치심 없음 Anottappa</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'들뜸(Uddhacca)','마음이 안정되지 못하고 흔들림. 모든 불선 마음에 공통.')">들뜸 Uddhacca</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'탐욕(Lobha)','대상에 집착하고 달라붙음.')">탐욕 Lobha</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'사견(Diṭṭhi)','잘못된 견해. 무아·업·윤회 등을 부정하는 견해.')">사견 Diṭṭhi</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'자만(Māna)','자신을 높이고 남과 비교하는 교만.')">자만 Māna</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'성냄(Dosa)','대상을 거부하고 밀어내는 마음. 분노·증오·슬픔 포함.')">성냄 Dosa</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'질투(Issā)','남의 행복과 성공을 못 견디는 마음.')">질투 Issā</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'인색(Macchariya)','자신의 것을 나누기 싫어함.')">인색 Macchariya</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'후회(Kukkucca)','이미 한 일·하지 않은 일에 대한 걱정과 후회.')">후회 Kukkucca</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'해태(Thīna)','마음의 나태함. 노력이 줄어들어 무기력해짐.')">해태 Thīna</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'혼침(Middha)','마음부수들의 나태함. 해태와 항상 함께 일어남.')">혼침 Middha</span>
+          <span class="ceta-tag ct-unwhole" onclick="showCeta(this,'의심(Vicikicchā)','붓다·법·승가·수행에 대한 의심.')">의심 Vicikicchā</span>
+        </div>
+      </div>
+
+      <div class="ceta-group" style="margin-bottom:0;">
+        <div class="ceta-group-head">
+          <div class="ceta-group-dot" style="background:var(--purple);"></div>
+          <div class="ceta-group-name">아름다운 마음부수</div>
+          <div class="ceta-group-count">25종 — 선·과보·작용 마음에 작동</div>
+        </div>
+        <div class="ceta-tags">
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'믿음(Saddhā)','삼보와 업의 법칙에 대한 청정한 믿음.')">믿음 Saddhā</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'마음챙김(Sati)','대상을 잊지 않고 지켜보는 것. 위빠사나 수행의 핵심.')">마음챙김 Sati</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'양심(Hirī)','잘못에 부끄러움을 느끼는 것.')">양심 Hirī</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'수치심(Ottappa)','잘못의 결과를 두려워하는 것.')">수치심 Ottappa</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'탐욕 없음(Alobha)','집착하지 않음. 보시(布施)의 토대.')">탐욕없음 Alobha</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'성냄 없음(Adosa)','자애(慈). 밀어내지 않고 받아들임.')">성냄없음 Adosa</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'평정(Tatramajjhattatā)','마음의 균형. 치우치지 않는 중도적 상태.')">평정 Tatramajjhattatā</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'지혜(Paññā)','사물의 참 성질을 있는 그대로 아는 것. 무상·고·무아를 앎.')">지혜 Paññā</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'자애(Mettā)','모든 중생의 행복을 바라는 마음. 4무량심 중 하나.')">자애 Mettā</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'연민(Karuṇā)','고통받는 중생을 가엾이 여기는 마음.')">연민 Karuṇā</span>
+          <span class="ceta-tag ct-beautiful" onclick="showCeta(this,'기쁨(Muditā)','남의 행복과 성공을 함께 기뻐하는 마음. 질투의 반대.')">기쁨 Muditā</span>
+        </div>
+      </div>
+
+      <div class="ceta-detail" id="ceta-detail"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">확인 퀴즈</div>
+      <div class="sec-title">마음부수 52종 — 확인</div>
+      <div id="q1-area"></div>
+      <div class="done-banner" id="d1-banner">
+        <div class="done-title">✓ 완료!</div>
+        <div class="done-sub">다음은 물질 28종입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(2)">물질 28종 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     패널 2: 물질 28종
+════════════════════════════ -->
+<div class="panel" id="panel-2">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">핵심개념 · 세 번째 모듈</div>
+      <div class="mod-title">물질(Rūpa) 28종</div>
+      <div class="mod-desc">아비담마는 물질을 4대 원소와 24가지 파생 물질로 분류합니다. 카드를 클릭해 탐색해보세요.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">물질이란?</div>
+      <div class="sec-body">
+        <p><strong>물질(Rūpa)</strong>은 변화하고(ruppati) 저항하는 성질을 가진 물리적 현상입니다.</p>
+        <div class="hl hl-amber">
+          물질은 마음·업·온도·음식, 이 <strong>4가지 원인</strong>에 의해 생성됩니다.<br>
+          가장 기본은 <strong>4대 원소</strong>이며, 나머지 24종은 4대 원소에서 파생됩니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">분류 다이어그램</div>
+      <div class="sec-title">물질 28종 탐색</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">카드를 클릭하면 상세 내용이 펼쳐집니다.</p>
+      <div class="rupa-grid">
+        <div class="rupa-card rc-mahabhuta" onclick="selectRupa(this,'mahabhuta')">
+          <div class="rupa-card-title" style="color:var(--amber);">🌍 4대 원소 (Mahābhūta)</div>
+          <div class="rupa-card-count" style="color:var(--amber);">4종</div>
+          <div class="rupa-card-items">지(地)·수(水)·화(火)·풍(風)</div>
+        </div>
+        <div class="rupa-card rc-pasada" onclick="selectRupa(this,'pasada')">
+          <div class="rupa-card-title" style="color:var(--green);">👁 감성 물질 (Pasāda)</div>
+          <div class="rupa-card-count" style="color:var(--green);">5종</div>
+          <div class="rupa-card-items">눈·귀·코·혀·몸</div>
+        </div>
+        <div class="rupa-card rc-gocara" onclick="selectRupa(this,'gocara')">
+          <div class="rupa-card-title" style="color:var(--blue);">🎨 대상 물질 (Gocara)</div>
+          <div class="rupa-card-count" style="color:var(--blue);">4종</div>
+          <div class="rupa-card-items">색·성·향·미 (촉은 4대 원소와 동일)</div>
+        </div>
+        <div class="rupa-card rc-other" onclick="selectRupa(this,'other')">
+          <div class="rupa-card-title" style="color:var(--text2);">🔧 기타 물질</div>
+          <div class="rupa-card-count" style="color:var(--text2);">15종</div>
+          <div class="rupa-card-items">성별·심장·명근·음식·허공·신·구·의·생·주·멸·무상·경·유연·적업</div>
+        </div>
+      </div>
+      <div class="rupa-detail" id="rupa-detail"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">확인 퀴즈</div>
+      <div class="sec-title">물질 28종 — 확인</div>
+      <div id="q2-area"></div>
+      <div class="done-banner" id="d2-banner">
+        <div class="done-title">✓ 완료!</div>
+        <div class="done-sub">다음은 열반(Nibbāna)입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(3)">열반 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     패널 3: 열반
+════════════════════════════ -->
+<div class="panel" id="panel-3">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">핵심개념 · 네 번째 모듈</div>
+      <div class="mod-title">열반(Nibbāna)</div>
+      <div class="mod-desc">아비담마에서 열반은 4법 중 유일한 무위법입니다. 탐·진·치의 완전한 소멸입니다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">열반이란?</div>
+      <div class="sec-body">
+        <p><strong>열반(Nibbāna)</strong>은 빠알리어로 "불꽃이 꺼짐(니+바나)"을 뜻합니다. 탐·진·치의 불꽃이 완전히 꺼진 상태입니다.</p>
+        <div class="hl hl-rose">
+          열반은 4법 중 유일한 <strong>무위법(無爲法, Asaṅkhata)</strong>입니다.<br>
+          마음·마음부수·물질은 조건에 의해 생멸하지만, 열반은 <strong>생멸이 없습니다.</strong>
+        </div>
+        <p>열반은 단순히 "없음"이 아닙니다. 고통의 소멸이자 최고의 행복(Paramaṁ sukhaṁ)입니다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">유여열반과 무여열반</div>
+      <div class="sec-title">두 가지 열반</div>
+      <div class="sec-body">
+        <p>상좌부 아비담마에서는 열반을 두 가지로 구분합니다.</p>
+        <div class="nibbana-compare">
+          <div class="nib-card nib-sa">
+            <div class="nib-title">유여열반 (Sa-upādisesa)</div>
+            <div class="nib-pali">有餘涅槃</div>
+            <div class="nib-desc">아라한이 살아있는 동안의 열반. 번뇌는 모두 소멸했으나 과거 업에 의한 오온(五蘊)이 아직 남아있는 상태.</div>
+          </div>
+          <div class="nib-card nib-pa">
+            <div class="nib-title">무여열반 (Anupādisesa)</div>
+            <div class="nib-pali">無餘涅槃</div>
+            <div class="nib-desc">아라한이 죽은 뒤의 열반. 오온이 완전히 소멸하여 어디에도 재생연결하지 않는 완전한 열반.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">열반과 수행</div>
+      <div class="sec-title">어떻게 열반에 도달하는가?</div>
+      <div class="sec-body">
+        <p>아비담마에서 열반은 도(道)·과(果) 마음의 대상입니다. 출세간 마음이 일어날 때 열반을 직접 대상으로 취합니다.</p>
+        <div class="hl hl-rose">
+          수다원 → 사다함 → 아나함 → 아라한<br>
+          각 단계마다 도심이 열반을 대상으로 일어나 <strong>번뇌를 끊습니다.</strong>
+        </div>
+        <p><strong>열반의 특성:</strong></p>
+        <p>· <strong>고요함(Santi)</strong> — 모든 형성된 것들의 고요함</p>
+        <p>· <strong>무위(Asaṅkhata)</strong> — 조건 지어지지 않음</p>
+        <p>· <strong>불사(Amata)</strong> — 죽음이 없음</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-tag">확인 퀴즈</div>
+      <div class="sec-title">열반 — 확인</div>
+      <div id="q3-area"></div>
+      <div class="done-banner" id="d3-banner">
+        <div class="done-title">🎉 핵심개념 단계 완료!</div>
+        <div class="done-sub">4가지 궁극적 실재를 모두 마쳤습니다.</div>
+        <a class="done-btn" href="index.html">홈으로 돌아가기</a>
+        <a class="done-btn" href="abhidhamma_vithi.html">인식과정으로 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── 서브 탭 전환 ── */
+function switchSub(i) {
+  document.querySelectorAll('.sub-tab').forEach((t,j) => t.classList.toggle('on', i===j));
+  document.querySelectorAll('.panel').forEach((p,j) => p.classList.toggle('on', i===j));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 트리 토글 ── */
+function toggleTree(head) {
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+
+/* ── 마음부수 상세 ── */
+function showCeta(el, name, desc) {
+  document.querySelectorAll('.ceta-tag').forEach(t => t.style.outline = 'none');
+  el.style.outline = '2px solid var(--accent)';
+  const d = document.getElementById('ceta-detail');
+  d.className = 'ceta-detail show';
+  d.innerHTML = `<strong style="color:var(--accent);">${name}</strong><br><br>${desc}`;
+}
+
+/* ── 물질 상세 ── */
+const rupaData = {
+  mahabhuta: { title:'4대 원소 (Mahābhūta)', html:`
+    <strong>지(地, Paṭhavī)</strong> — 단단함과 부드러움의 원소. 물질의 범위를 정함.<br>
+    <strong>수(水, Āpo)</strong> — 응집과 흐름의 원소. 물질을 하나로 묶음.<br>
+    <strong>화(火, Tejo)</strong> — 뜨거움과 차가움의 원소. 성숙과 소화를 주관.<br>
+    <strong>풍(風, Vāyo)</strong> — 지지함과 움직임의 원소. 운동과 팽창을 주관.<br><br>
+    4대 원소는 항상 함께 존재하며, 어떤 물질도 4대 원소 없이 존재하지 않습니다.` },
+  pasada: { title:'감성 물질 (Pasāda Rūpa)', html:`
+    감성 물질은 각 감각문(感覺門)에서 외부 대상을 받아들이는 물질입니다.<br><br>
+    <strong>안처(眼處, Cakkhu)</strong> — 눈 속에 있는 빛을 받아들이는 물질<br>
+    <strong>이처(耳處, Sota)</strong> — 귀 속에 있는 소리를 받아들이는 물질<br>
+    <strong>비처(鼻處, Ghāna)</strong> — 코 속에 있는 냄새를 받아들이는 물질<br>
+    <strong>설처(舌處, Jivhā)</strong> — 혀 위에 있는 맛을 받아들이는 물질<br>
+    <strong>신처(身處, Kāya)</strong> — 몸 전체에 있는 촉감을 받아들이는 물질` },
+  gocara: { title:'대상 물질 (Gocara Rūpa)', html:`
+    오식(五識)이 인식하는 외부 대상이 되는 물질입니다.<br><br>
+    <strong>색(色, Rūpa)</strong> — 눈으로 보이는 빛과 색깔<br>
+    <strong>성(聲, Sadda)</strong> — 귀로 들리는 소리<br>
+    <strong>향(香, Gandha)</strong> — 코로 맡는 냄새<br>
+    <strong>미(味, Rasa)</strong> — 혀로 느끼는 맛<br><br>
+    촉(觸)은 별도 물질이 아니라 4대 원소(딱딱함·거침·따뜻함·압력)가 촉감이 됩니다.` },
+  other: { title:'기타 물질 (15종)', html:`
+    <strong>심장 물질(Hadaya)</strong> — 의식이 의지하는 물질 (심장 부위)<br>
+    <strong>성별 물질(Bhāva)</strong> — 남성·여성의 특성을 나타내는 물질<br>
+    <strong>생명기능(Jīvitindriya)</strong> — 업에 의해 생성된 물질을 살아있게 함<br>
+    <strong>음식 물질(Āhāra)</strong> — 영양분. 물질의 생성 원인 중 하나<br>
+    <strong>허공 물질(Ākāsa)</strong> — 물질 덩어리 사이의 경계를 구분함<br>
+    <strong>몸의 표현(Kāya-viññatti)</strong> — 몸짓으로 의사를 전달함<br>
+    <strong>말의 표현(Vacī-viññatti)</strong> — 말로 의사를 전달함<br>
+    그 외 경안·유연·적합·생·주·멸·무상성 등` }
+};
+
+function selectRupa(el, key) {
+  document.querySelectorAll('.rupa-card').forEach(c => { c.classList.remove('sel'); c.style.boxShadow='none'; });
+  el.classList.add('sel');
+  const d = rupaData[key];
+  const panel = document.getElementById('rupa-detail');
+  panel.className = 'rupa-detail show';
+  panel.innerHTML = `<strong style="color:var(--amber);display:block;margin-bottom:8px;">${d.title}</strong>${d.html}`;
+}
+
+/* ── 퀴즈 공통 ── */
+function makeQuiz(areaId, bannerId, quizzes) {
+  let idx = 0;
+  const fn = 'ans_' + areaId;
+  function render() {
+    if (idx >= quizzes.length) {
+      document.getElementById(areaId).innerHTML = '<p style="font-size:14px;color:var(--green);font-weight:500;text-align:center;padding:14px 0;">🎉 퀴즈 완료!</p>';
+      document.getElementById(bannerId).classList.add('show');
+      return;
+    }
+    const q = quizzes[idx];
+    document.getElementById(areaId).innerHTML = `
+      <div class="quiz-num">문제 ${idx+1} / ${quizzes.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="${fn}(${i})">${o}</button>`).join('')}</div>
+      <div class="quiz-result" id="qr_${areaId}"></div>`;
+    window[fn] = function(i) {
+      document.querySelectorAll(`#${areaId} .quiz-opt`).forEach((o,j) => { o.disabled=true; if(j===q.ans) o.classList.add('correct'); else if(j===i) o.classList.add('wrong'); });
+      const res = document.getElementById('qr_'+areaId);
+      res.className = 'quiz-result show ' + (i===q.ans?'ok':'fail');
+      res.innerHTML = i===q.ans ? '✓ 정답! '+q.explain : '✗ 정답은 <strong>"'+q.opts[q.ans]+'"</strong>입니다. '+q.explain;
+      setTimeout(() => { idx++; render(); }, 2000);
+    };
+  }
+  render();
+}
+
+makeQuiz('q0-area','d0-banner',[
+  { q:"마음(Citta) 89종 중 가장 많은 종류를 차지하는 것은?", opts:["욕계 마음","색계 마음","무색계 마음","출세간 마음"], ans:0, explain:"욕계 마음은 54종으로 가장 많습니다. 색계 15종, 무색계 12종, 출세간 8종 순입니다." },
+  { q:"출세간 마음에 해당하지 않는 것은?", opts:["예류도·과","일래도·과","선정심·과","아라한도·과"], ans:2, explain:"선정심은 색계·무색계 마음입니다. 출세간 마음은 예류·일래·불환·아라한의 도심과 과심 8종(또는 40종)입니다." },
+]);
+makeQuiz('q1-area','d1-banner',[
+  { q:"속행(자와나) 찰나에서 '전체를 리드한다'고 설명되는 마음부수는?", opts:["마음챙김(Sati)","의도(Cetanā)","지혜(Paññā)","집중(Ekaggatā)"], ans:1, explain:"의도(Cetanā)는 마음을 이끌고 조직하는 역할을 하며, 업(業)을 형성하는 핵심 마음부수입니다." },
+  { q:"모든 불선 마음에 공통으로 나타나는 마음부수 2가지는?", opts:["탐욕·성냄","어리석음·들뜸","사견·의심","질투·인색"], ans:1, explain:"어리석음(Moha)과 들뜸(Uddhacca)은 모든 불선 마음에 공통으로 나타납니다." },
+]);
+makeQuiz('q2-area','d2-banner',[
+  { q:"물질의 생성 원인 4가지에 해당하지 않는 것은?", opts:["마음","업","바람(욕망)","온도"], ans:2, explain:"물질의 4가지 생성 원인은 마음·업·온도·음식입니다. 바람(욕망)은 해당되지 않습니다." },
+  { q:"아비담마에서 물질은 총 몇 종으로 분류되나요?", opts:["18종","24종","28종","32종"], ans:2, explain:"물질은 4대 원소 4종 + 파생 물질 24종 = 총 28종으로 분류됩니다." },
+]);
+makeQuiz('q3-area','d3-banner',[
+  { q:"4법 중 유일한 무위법(無爲法)은?", opts:["마음(Citta)","마음부수(Cetasika)","물질(Rūpa)","열반(Nibbāna)"], ans:3, explain:"열반만이 조건 지어지지 않은 무위법입니다. 나머지 3법은 조건에 의해 생멸하는 유위법입니다." },
+  { q:"아라한이 살아있는 동안의 열반을 무엇이라 하나요?", opts:["무여열반","유여열반","완전열반","반열반"], ans:1, explain:"유여열반(Sa-upādisesa)은 아라한이 살아있는 동안, 오온이 아직 남아있는 상태의 열반입니다." },
+]);
+</script>
+</body>
+</html>

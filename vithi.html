@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>인식과정 — 아비담마 교육 프로그램</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f8f7f4;--bg2:#ffffff;--bg3:#f1efe9;
+      --border:#e4e2db;--border2:#c8c5bc;
+      --text:#1a1a1a;--text2:#555050;--text3:#9e9990;
+      --accent:#6b46c1;
+      --green:#2e7d52;--green-bg:#edf7f1;
+      --blue:#1a6faa;--blue-bg:#e8f3fb;
+      --amber:#b45309;--amber-bg:#fef3e2;
+      --teal:#0f766e;--teal-bg:#f0fdfa;
+      --rose:#be185d;--rose-bg:#fdf2f8;
+      --red:#b91c1c;--red-bg:#fef2f2;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;}
+    .topbar{position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .topbar-logo{display:flex;align-items:center;gap:8px;padding:11px 24px 0;font-size:13px;font-weight:500;color:var(--text);text-decoration:none;}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .main-nav{display:flex;overflow-x:auto;padding:0 16px;}
+    .main-nav::-webkit-scrollbar{height:0;}
+    .nav-item{flex-shrink:0;padding:9px 12px 8px;font-size:12px;font-weight:500;color:var(--text3);text-decoration:none;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .nav-item:hover{color:var(--text2);}
+    .nav-item.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .sub-tabbar{background:var(--bg3);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;position:sticky;top:72px;z-index:199;}
+    .sub-tabbar::-webkit-scrollbar{height:0;}
+    .sub-tab{flex-shrink:0;padding:8px 14px 7px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+    .sub-tab:hover{color:var(--text2);}
+    .sub-tab.on{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .panel{display:none;}.panel.on{display:block;}
+    .content{max-width:680px;margin:0 auto;padding:28px 20px 80px;}
+    .mod-header{margin-bottom:24px;}
+    .mod-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+    .mod-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.4;}
+    .mod-desc{font-size:13px;color:var(--text2);line-height:1.75;}
+    .sec{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+    .sec-tag{font-size:10px;font-weight:500;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+    .sec-title{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.4;}
+    .sec-body{font-size:13px;color:var(--text2);line-height:1.8;}
+    .sec-body p{margin-bottom:10px;}.sec-body p:last-child{margin-bottom:0;}.sec-body strong{color:var(--text);}
+    .hl{border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:13px 15px;margin:13px 0;font-size:13px;color:var(--text2);line-height:1.75;background:var(--blue-bg);}
+    .hl strong{color:var(--blue);}
+    .hl-amber{background:var(--amber-bg);border-left-color:var(--amber);}.hl-amber strong{color:var(--amber);}
+    .hl-teal{background:var(--teal-bg);border-left-color:var(--teal);}.hl-teal strong{color:var(--teal);}
+    .hl-rose{background:var(--rose-bg);border-left-color:var(--rose);}.hl-rose strong{color:var(--rose);}
+
+    /* 찰나 트랙 */
+    .vithi-scroll{overflow-x:auto;padding-bottom:6px;margin:14px 0;}
+    .vithi-track{display:flex;gap:4px;min-width:max-content;}
+    .vc{width:56px;flex-shrink:0;cursor:pointer;border-radius:8px;border:1.5px solid transparent;transition:all 0.15s;text-align:center;padding:0 2px 5px;}
+    .vc:hover{transform:translateY(-2px);}
+    .vc.active{border-color:var(--accent);}
+    .vc-n{font-size:9px;color:var(--text3);padding:3px 0 1px;}
+    .vc-inner{border-radius:6px;padding:5px 3px 6px;}
+    .vc-name{font-size:10px;font-weight:500;line-height:1.25;min-height:28px;display:flex;align-items:center;justify-content:center;}
+    .c-bg{background:#E1F5EE;color:#085041;}.c-va{background:#E6F1FB;color:#0C447C;}
+    .c-sa{background:#EEEDFE;color:#3C3489;}.c-ja{background:#FAEEDA;color:#633806;}
+    .c-td{background:#EAF3DE;color:#27500A;}
+    .vithi-detail{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:4px;min-height:100px;}
+    .vd-hint{font-size:12px;color:var(--text3);text-align:center;padding:20px 0;}
+    .vd-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+    .vd-pali{font-size:11px;color:var(--text3);font-style:italic;margin-bottom:6px;}
+    .vd-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+    .vd-tags{display:flex;flex-wrap:wrap;gap:5px;}
+    .vd-tag{font-size:11px;padding:3px 9px;border-radius:99px;}
+    .vd-common{background:#E1F5EE;color:#085041;border:1px solid #bbf7d0;}
+    .vd-add{background:#EEEDFE;color:#3C3489;border:1px solid #ddd6fe;}
+    .vd-lead{background:#7c1d1d;color:#fca5a5;font-weight:500;}
+
+    /* 선정 단계 */
+    .jhana-steps{display:flex;flex-direction:column;gap:8px;margin:14px 0;}
+    .jhana-step{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;}
+    .jhana-step:hover{border-color:var(--border2);}
+    .jhana-step.open{border-color:var(--blue);background:var(--blue-bg);}
+    .jhana-step-head{display:flex;align-items:center;gap:10px;}
+    .jhana-num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+    .jhana-step.open .jhana-num{background:var(--accent);}
+    .jhana-name{font-size:13px;font-weight:500;color:var(--text);flex:1;}
+    .jhana-pali{font-size:11px;color:var(--text3);}
+    .jhana-body{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.7;}
+    .jhana-step.open .jhana-body{display:block;}
+    .jhana-factors{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+    .jf{font-size:11px;padding:2px 9px;border-radius:99px;background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe;}
+    .jf.absent{background:var(--bg3);color:var(--text3);border-color:var(--border);text-decoration:line-through;}
+
+    /* 도과 흐름 */
+    .magga-flow{display:flex;flex-direction:column;gap:6px;margin:14px 0;}
+    .mf-row{display:flex;align-items:center;gap:8px;}
+    .mf-cell{flex:1;padding:10px 12px;border-radius:9px;text-align:center;font-size:12px;font-weight:500;}
+    .mf-arrow{font-size:16px;color:var(--text3);flex-shrink:0;}
+    .mf-stage{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:4px;}
+    .mf-stage-title{font-size:13px;font-weight:500;color:var(--accent);margin-bottom:6px;}
+    .mf-stage-body{font-size:12px;color:var(--text2);line-height:1.65;}
+
+    /* 퀴즈 */
+    .quiz-num{font-size:11px;color:var(--text3);margin-bottom:8px;}
+    .quiz-q{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.55;}
+    .quiz-opts{display:flex;flex-direction:column;gap:7px;}
+    .quiz-opt{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:transparent;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Noto Sans KR',sans-serif;}
+    .quiz-opt:hover:not(:disabled){border-color:var(--accent);color:var(--text);}
+    .quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+    .quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+    .quiz-result{display:none;margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12px;line-height:1.6;}
+    .quiz-result.show{display:block;}
+    .quiz-result.ok{background:var(--green-bg);color:var(--green);}
+    .quiz-result.fail{background:var(--red-bg);color:var(--red);}
+    .done-banner{display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:12px;padding:20px;text-align:center;margin-top:14px;}
+    .done-banner.show{display:block;}
+    .done-title{font-size:15px;font-weight:500;color:var(--green);margin-bottom:5px;}
+    .done-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+    .done-btn{display:inline-block;padding:8px 20px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:500;text-decoration:none;margin:4px;}
+    .done-btn-sec{display:inline-block;padding:8px 20px;border-radius:99px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:4px;}
+    @media(max-width:480px){.content{padding:20px 14px 60px;}.sub-tabbar{top:68px;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a class="topbar-logo" href="index.html"><div class="logo-dot"></div>아비담마 교육 프로그램</a>
+  <div class="main-nav">
+    <a class="nav-item" href="index.html">홈</a>
+    <a class="nav-item" href="intro.html">입문</a>
+    <a class="nav-item" href="core-concepts.html">핵심개념</a>
+    <button class="nav-item on">인식과정</button>
+    <a class="nav-item" href="life-rebirth.html">삶과재생</a>
+    <a class="nav-item" href="advanced.html">심화·응용</a>
+  </div>
+</div>
+<div class="sub-tabbar">
+  <button class="sub-tab on" onclick="switchSub(0)">17심찰나 인식과정</button>
+  <button class="sub-tab" onclick="switchSub(1)">선정 인식과정</button>
+  <button class="sub-tab" onclick="switchSub(2)">도·과 인식과정</button>
+</div>
+
+<!-- ══ 패널 0: 17심찰나 ══ -->
+<div class="panel on" id="panel-0">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">인식과정 · 첫 번째 모듈</div>
+      <div class="mod-title">17심찰나 인식과정</div>
+      <div class="mod-desc">마음이 대상을 인식하는 순간을 17개의 찰나로 분석합니다. 찰나를 클릭하면 마음부수가 표시됩니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">인식과정(Vīthi)이란?</div>
+      <div class="sec-body">
+        <p>아비담마에서 마음은 찰나적으로 생멸합니다. 하나의 대상이 감각문에 나타났다 사라질 때까지 <strong>17개의 찰나</strong>가 연속으로 일어납니다.</p>
+        <div class="hl">마음이 대상을 인식하는 전 과정을 <strong>인식과정(Vīthi)</strong>이라 합니다.<br>이 과정은 바왕가(잠재의식)의 흐름이 끊기면서 시작됩니다.</div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">인터랙티브 — 찰나를 클릭하세요</div>
+      <div class="sec-title">5문 인식과정</div>
+      <div class="vithi-scroll"><div class="vithi-track" id="vithi-track-5"></div></div>
+      <div class="vithi-detail" id="vithi-detail-5"><div class="vd-hint">위 찰나를 클릭하면 마음부수가 표시됩니다</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">17심찰나 — 확인</div>
+      <div id="q0-area"></div>
+      <div class="done-banner" id="d0-banner">
+        <div class="done-title">✓ 완료!</div><div class="done-sub">다음은 선정 인식과정입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(1)">선정 인식과정 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 패널 1: 선정 인식과정 ══ -->
+<div class="panel" id="panel-1">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">인식과정 · 두 번째 모듈</div>
+      <div class="mod-title">선정(禪定) 인식과정</div>
+      <div class="mod-desc">색계·무색계 선정에 진입할 때의 마음 흐름을 단계별로 살펴봅니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">선정 진입 과정</div>
+      <div class="sec-body">
+        <p>선정(Jhāna)에 진입할 때는 일반 인식과정과 다른 특별한 마음 흐름이 일어납니다.</p>
+        <div class="hl hl-teal">선정 진입 직전 <strong>근접삼매(upacāra-samādhi)</strong>에서 준비심·근접심·순서심이 일어난 뒤, 마침내 <strong>초월심(appanā)</strong>이 일어나 선정에 진입합니다.</div>
+        <p>색계 선정은 <strong>5단계</strong>(초선~5선)로, 무색계 선정은 <strong>4단계</strong>(공무변처~비상비비상처)로 구분됩니다.</p>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">색계 5선 단계별 탐색</div>
+      <div class="sec-title">색계 선정 — 선정지(禪支)의 변화</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">각 선정을 클릭하면 선정지 구성이 표시됩니다.</p>
+      <div class="jhana-steps">
+        <div class="jhana-step" onclick="toggleJhana(this)">
+          <div class="jhana-step-head"><div class="jhana-num">1</div><div class="jhana-name">초선 (Paṭhama-jhāna)</div><div class="jhana-pali">선정지 5가지</div></div>
+          <div class="jhana-body">
+            <p>가장 거친 단계의 선정. 5가지 선정지가 모두 갖춰진 상태입니다.</p>
+            <div class="jhana-factors">
+              <span class="jf">일으킨 생각(Vitakka)</span><span class="jf">지속적 고찰(Vicāra)</span><span class="jf">희열(Pīti)</span><span class="jf">즐거움(Sukha)</span><span class="jf">집중(Ekaggatā)</span>
+            </div>
+          </div>
+        </div>
+        <div class="jhana-step" onclick="toggleJhana(this)">
+          <div class="jhana-step-head"><div class="jhana-num">2</div><div class="jhana-name">이선 (Dutiya-jhāna)</div><div class="jhana-pali">선정지 4가지</div></div>
+          <div class="jhana-body">
+            <p>일으킨 생각(Vitakka)이 탈락합니다. 마음이 더욱 고요해집니다.</p>
+            <div class="jhana-factors">
+              <span class="jf absent">일으킨 생각(탈락)</span><span class="jf">지속적 고찰(Vicāra)</span><span class="jf">희열(Pīti)</span><span class="jf">즐거움(Sukha)</span><span class="jf">집중(Ekaggatā)</span>
+            </div>
+          </div>
+        </div>
+        <div class="jhana-step" onclick="toggleJhana(this)">
+          <div class="jhana-step-head"><div class="jhana-num">3</div><div class="jhana-name">삼선 (Tatiya-jhāna)</div><div class="jhana-pali">선정지 3가지</div></div>
+          <div class="jhana-body">
+            <p>지속적 고찰(Vicāra)도 탈락합니다. 희열·즐거움·집중만 남습니다.</p>
+            <div class="jhana-factors">
+              <span class="jf absent">일으킨 생각(탈락)</span><span class="jf absent">지속적 고찰(탈락)</span><span class="jf">희열(Pīti)</span><span class="jf">즐거움(Sukha)</span><span class="jf">집중(Ekaggatā)</span>
+            </div>
+          </div>
+        </div>
+        <div class="jhana-step" onclick="toggleJhana(this)">
+          <div class="jhana-step-head"><div class="jhana-num">4</div><div class="jhana-name">사선 (Catuttha-jhāna)</div><div class="jhana-pali">선정지 2가지</div></div>
+          <div class="jhana-body">
+            <p>희열(Pīti)도 탈락하고 즐거움 대신 평정(Upekkhā)이 나타납니다.</p>
+            <div class="jhana-factors">
+              <span class="jf absent">일으킨 생각(탈락)</span><span class="jf absent">지속적 고찰(탈락)</span><span class="jf absent">희열(탈락)</span><span class="jf">평정(Upekkhā)</span><span class="jf">집중(Ekaggatā)</span>
+            </div>
+          </div>
+        </div>
+        <div class="jhana-step" onclick="toggleJhana(this)">
+          <div class="jhana-step-head"><div class="jhana-num">5</div><div class="jhana-name">오선 (Pañcama-jhāna)</div><div class="jhana-pali">선정지 2가지 (4선과 동일)</div></div>
+          <div class="jhana-body">
+            <p>4선과 선정지는 같으나 더 깊고 안정된 상태. 무색계 선정의 토대가 됩니다.</p>
+            <div class="jhana-factors">
+              <span class="jf">평정(Upekkhā)</span><span class="jf">집중(Ekaggatā)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">무색계 4선</div>
+      <div class="sec-title">무색계 선정</div>
+      <div class="sec-body">
+        <p>색계 5선을 바탕으로 물질적 대상에서 벗어난 4가지 무색계 선정이 있습니다.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+          <div style="background:var(--teal-bg);border:1px solid #5eead4;border-radius:10px;padding:12px;">
+            <div style="font-size:11px;font-weight:500;color:var(--teal);margin-bottom:4px;">공무변처</div>
+            <div style="font-size:11px;color:var(--text2);">허공이 무한함을 대상으로 함</div>
+          </div>
+          <div style="background:var(--teal-bg);border:1px solid #5eead4;border-radius:10px;padding:12px;">
+            <div style="font-size:11px;font-weight:500;color:var(--teal);margin-bottom:4px;">식무변처</div>
+            <div style="font-size:11px;color:var(--text2);">의식이 무한함을 대상으로 함</div>
+          </div>
+          <div style="background:var(--teal-bg);border:1px solid #5eead4;border-radius:10px;padding:12px;">
+            <div style="font-size:11px;font-weight:500;color:var(--teal);margin-bottom:4px;">무소유처</div>
+            <div style="font-size:11px;color:var(--text2);">아무것도 없음을 대상으로 함</div>
+          </div>
+          <div style="background:var(--teal-bg);border:1px solid #5eead4;border-radius:10px;padding:12px;">
+            <div style="font-size:11px;font-weight:500;color:var(--teal);margin-bottom:4px;">비상비비상처</div>
+            <div style="font-size:11px;color:var(--text2);">인식이 있는 것도 없는 것도 아님</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">선정 인식과정 — 확인</div>
+      <div id="q1-area"></div>
+      <div class="done-banner" id="d1-banner">
+        <div class="done-title">✓ 완료!</div><div class="done-sub">다음은 도·과 인식과정입니다.</div>
+        <button class="done-btn-sec" onclick="switchSub(2)">도·과 인식과정 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 패널 2: 도·과 인식과정 ══ -->
+<div class="panel" id="panel-2">
+  <div class="content">
+    <div class="mod-header">
+      <div class="mod-tag">인식과정 · 세 번째 모듈</div>
+      <div class="mod-title">도·과 인식과정</div>
+      <div class="mod-desc">출세간 마음이 일어나는 순간의 인식과정을 살펴봅니다. 수다원에서 아라한까지 4단계입니다.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">개념</div>
+      <div class="sec-title">출세간 인식과정이란?</div>
+      <div class="sec-body">
+        <p>수행이 무르익으면 특별한 인식과정이 일어납니다. 열반(Nibbāna)을 대상으로 하는 <strong>출세간 마음</strong>이 일어나는 것입니다.</p>
+        <div class="hl hl-rose">
+          도심(Magga-citta)이 한 찰나 일어나 번뇌를 끊고,<br>
+          바로 이어서 과심(Phala-citta)이 2~3찰나 일어납니다.<br>
+          이후 <strong>반조심(Paccavekkhaṇa)</strong>으로 성취를 돌아봅니다.
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">4단계 도·과</div>
+      <div class="sec-title">수다원에서 아라한까지</div>
+      <div class="magga-flow">
+        <div class="mf-stage">
+          <div class="mf-stage-title">① 수다원 (Sotāpatti) — 예류</div>
+          <div class="mf-stage-body">
+            <strong>끊어지는 번뇌:</strong> 유신견(有身見)·계금취견·의심<br>
+            <strong>남은 윤회:</strong> 최대 7번<br>
+            <strong>보장:</strong> 악처(지옥·아귀·축생)에 떨어지지 않음
+          </div>
+        </div>
+        <div class="mf-stage">
+          <div class="mf-stage-title">② 사다함 (Sakadāgāmi) — 일래</div>
+          <div class="mf-stage-body">
+            <strong>끊어지는 번뇌:</strong> 욕계 탐욕·성냄이 약화됨<br>
+            <strong>남은 윤회:</strong> 욕계에 한 번만 더 옴<br>
+            <strong>특징:</strong> 수다원보다 번뇌가 훨씬 엷어짐
+          </div>
+        </div>
+        <div class="mf-stage">
+          <div class="mf-stage-title">③ 아나함 (Anāgāmi) — 불환</div>
+          <div class="mf-stage-body">
+            <strong>끊어지는 번뇌:</strong> 욕계 탐욕·성냄 완전 소멸<br>
+            <strong>남은 윤회:</strong> 욕계에 다시 오지 않음. 색계·무색계에서 열반<br>
+            <strong>특징:</strong> 정거천(淨居天)에 재생
+          </div>
+        </div>
+        <div class="mf-stage">
+          <div class="mf-stage-title">④ 아라한 (Arahatta) — 응공</div>
+          <div class="mf-stage-body">
+            <strong>끊어지는 번뇌:</strong> 색계 탐욕·무색계 탐욕·자만·들뜸·무명 완전 소멸<br>
+            <strong>남은 윤회:</strong> 없음 — 이번 생이 마지막<br>
+            <strong>특징:</strong> 모든 번뇌 소멸, 완전한 해탈
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-tag">퀴즈</div>
+      <div class="sec-title">도·과 인식과정 — 확인</div>
+      <div id="q2-area"></div>
+      <div class="done-banner" id="d2-banner">
+        <div class="done-title">🎉 인식과정 단계 완료!</div>
+        <div class="done-sub">인식과정 3개 모듈을 모두 마쳤습니다.</div>
+        <a class="done-btn" href="index.html">홈으로</a>
+        <a class="done-btn" href="life-rebirth.html">삶과재생 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded',function(){
+  const hash=location.hash.replace('#','');
+  const map={vithi:0,jhana:1,magga:2};
+  if(hash&&map[hash]!==undefined)switchSub(map[hash]);
+  buildVithi();
+});
+function switchSub(i){
+  document.querySelectorAll('.sub-tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleJhana(el){el.classList.toggle('open');}
+
+/* 찰나 데이터 */
+const C7=['접촉(Phassa)','느낌(Vedanā)','인식(Saññā)','의도(Cetanā)','집중(Ekaggatā)','생명기능(Jīvitindriya)','주의기울임(Manasikāra)'];
+const v5=[
+  {n:1,name:'바왕가',type:'c-bg',isJ:false,desc:'잠재의식의 흐름.',add:[]},
+  {n:2,name:'바왕가 동요',type:'c-bg',isJ:false,desc:'대상이 감각문에 닿으며 바왕가가 흔들림.',add:[]},
+  {n:3,name:'바왕가 끊어짐',type:'c-bg',isJ:false,desc:'바왕가가 끊기며 인식과정 시작.',add:[]},
+  {n:4,name:'5문 전향',type:'c-va',isJ:false,desc:'감각문으로 마음이 돌아섬.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)']},
+  {n:5,name:'오식',type:'c-va',isJ:false,desc:'눈·귀·코·혀·몸 중 하나가 대상을 직접 경험.',add:['일으킨 생각(Vitakka)']},
+  {n:6,name:'받아들임',type:'c-sa',isJ:false,desc:'대상을 받아들이는 찰나.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)']},
+  {n:7,name:'조사',type:'c-sa',isJ:false,desc:'대상을 조사·검토.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','희열(Pīti)']},
+  {n:8,name:'결정',type:'c-sa',isJ:false,desc:'대상의 종류를 결정. 이후 자와나의 선·불선이 결정됨.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)']},
+  {n:9,name:'속행 1',type:'c-ja',isJ:true,desc:'업을 짓는 핵심 찰나. 의도(Cetanā)가 전체를 리드함.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:10,name:'속행 2',type:'c-ja',isJ:true,desc:'자와나 2번째.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:11,name:'속행 3',type:'c-ja',isJ:true,desc:'자와나 3번째.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:12,name:'속행 4',type:'c-ja',isJ:true,desc:'자와나 4번째. 중간 찰나로 업의 힘이 가장 강함.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:13,name:'속행 5',type:'c-ja',isJ:true,desc:'자와나 5번째.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:14,name:'속행 6',type:'c-ja',isJ:true,desc:'자와나 6번째.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:15,name:'속행 7',type:'c-ja',isJ:true,desc:'자와나 마지막. 이후 등록심 또는 바왕가로.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)','노력(Viriya)']},
+  {n:16,name:'등록 1',type:'c-td',isJ:false,desc:'대상이 뚜렷할 때만 일어나는 등록 찰나.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)']},
+  {n:17,name:'등록 2',type:'c-td',isJ:false,desc:'등록 2번째. 이후 바왕가로 떨어지며 인식과정 종료.',add:['일으킨 생각(Vitakka)','지속적 고찰(Vicāra)','결의(Adhimokkha)','희열(Pīti)']},
+];
+let selV5=null;
+function buildVithi(){
+  const track=document.getElementById('vithi-track-5');
+  if(!track)return;
+  v5.forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.className='vc '+c.type;
+    el.innerHTML=`<div class="vc-n">${c.n}</div><div class="vc-inner ${c.type}"><div class="vc-name">${c.name}</div></div>`;
+    el.onclick=()=>{selV5=i;document.querySelectorAll('#vithi-track-5 .vc').forEach((v,j)=>v.classList.toggle('active',j===i));showVDetail(c);};
+    track.appendChild(el);
+  });
+}
+function showVDetail(c){
+  const box=document.getElementById('vithi-detail-5');
+  const commonTags=C7.map(t=>{
+    const isLead=c.isJ&&t.startsWith('의도');
+    return isLead?`<span class="vd-tag vd-lead">★ ${t} — 전체를 리드함</span>`:`<span class="vd-tag vd-common">${t}</span>`;
+  }).join('');
+  const addTags=c.add.length?c.add.map(t=>`<span class="vd-tag vd-add">${t}</span>`).join(''):'<span style="font-size:11px;color:var(--text3);font-style:italic;">추가 마음부수 없음</span>';
+  const leadNotice=c.isJ?`<div style="background:rgba(124,29,29,0.1);border:1px solid rgba(252,165,165,0.3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#b91c1c;line-height:1.5;">★ 속행(자와나) 구간 — <strong>의도(Cetanā)</strong>가 전체를 이끌며 선·불선 업(業)을 형성합니다.</div>`:'';
+  box.innerHTML=`<div class="vd-title">${c.n}. ${c.name}</div><div class="vd-desc">${c.desc}</div>${leadNotice}<div style="font-size:10px;color:var(--text3);margin-bottom:6px;font-weight:500;">공통 마음부수 7가지</div><div class="vd-tags" style="margin-bottom:10px;">${commonTags}</div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;font-weight:500;">추가 마음부수</div><div class="vd-tags">${addTags}</div>`;
+}
+
+function makeQuiz(areaId,bannerId,quizzes){
+  let idx=0;
+  const fn='ans_'+areaId;
+  function render(){
+    if(idx>=quizzes.length){
+      document.getElementById(areaId).innerHTML='<p style="font-size:14px;color:var(--green);font-weight:500;text-align:center;padding:14px 0;">🎉 퀴즈 완료!</p>';
+      document.getElementById(bannerId).classList.add('show');return;
+    }
+    const q=quizzes[idx];
+    document.getElementById(areaId).innerHTML=`<div class="quiz-num">문제 ${idx+1} / ${quizzes.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="${fn}(${i})">${o}</button>`).join('')}</div><div class="quiz-result" id="qr_${areaId}"></div>`;
+    window[fn]=function(i){
+      document.querySelectorAll(`#${areaId} .quiz-opt`).forEach((o,j)=>{o.disabled=true;if(j===q.ans)o.classList.add('correct');else if(j===i)o.classList.add('wrong');});
+      const res=document.getElementById('qr_'+areaId);
+      res.className='quiz-result show '+(i===q.ans?'ok':'fail');
+      res.innerHTML=i===q.ans?'✓ 정답! '+q.explain:'✗ 정답은 <strong>"'+q.opts[q.ans]+'"</strong>입니다. '+q.explain;
+      setTimeout(()=>{idx++;render();},2000);
+    };
+  }
+  render();
+}
+makeQuiz('q0-area','d0-banner',[
+  {q:"17심찰나 중 업(業)을 짓는 핵심 찰나는?",opts:["바왕가","오식","속행(자와나)","등록"],ans:2,explain:"속행(자와나)은 7번 반복되며 업을 짓는 핵심 찰나입니다."},
+  {q:"속행 찰나에서 '전체를 리드한다'고 알려진 마음부수는?",opts:["집중(Ekaggatā)","의도(Cetanā)","느낌(Vedanā)","희열(Pīti)"],ans:1,explain:"의도(Cetanā)는 마음을 이끌고 업을 형성하는 핵심 마음부수입니다."},
+]);
+makeQuiz('q1-area','d1-banner',[
+  {q:"색계 초선에서 이선으로 진입할 때 탈락하는 선정지는?",opts:["희열(Pīti)","집중(Ekaggatā)","일으킨 생각(Vitakka)","즐거움(Sukha)"],ans:2,explain:"이선에서는 일으킨 생각(Vitakka)이 탈락합니다. 지속적 고찰·희열·즐거움·집중이 남습니다."},
+  {q:"무색계 선정이 아닌 것은?",opts:["공무변처","비상비비상처","삼선(Tatiya-jhāna)","무소유처"],ans:2,explain:"삼선은 색계 선정입니다. 무색계 선정은 공무변처·식무변처·무소유처·비상비비상처 4가지입니다."},
+]);
+makeQuiz('q2-area','d2-banner',[
+  {q:"욕계 탐욕과 성냄을 완전히 소멸시키는 단계는?",opts:["수다원","사다함","아나함","아라한"],ans:2,explain:"아나함(불환)은 욕계 탐욕·성냄을 완전히 소멸시킵니다. 그래서 욕계에 다시 오지 않습니다."},
+  {q:"도심(Magga-citta)이 일어난 직후 이어지는 마음은?",opts:["바왕가","속행심","과심(Phala-citta)","등록심"],ans:2,explain:"도심이 한 찰나 일어나 번뇌를 끊은 뒤, 바로 과심(Phala-citta)이 2~3찰나 이어집니다."},
+]);
+</script>
+</body>
+</html>
